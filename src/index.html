@@ -23,9 +23,25 @@
 <aside class="pageAside"></aside>
 <main class="pageMain">
 
-    <div class="formCtl" id="regex">
+    <div class="formCtl" id="regexSource">
         <input class="formInput">
         <span class="formTitle">请输入正则表达式</span>
+    </div>
+
+    <div class="formCtl miniTitle" id="regexFlag">
+        <span class="formChb">
+            <input type="checkbox" id="regexFlag_g" value="g"><label for="regexFlag_g">g</label>
+        </span>
+        <span class="formChb">
+            <input type="checkbox" id="regexFlag_i" value="i"><label for="regexFlag_i">i</label>
+        </span>
+        <span class="formChb">
+            <input type="checkbox" id="regexFlag_m" value="m"><label for="regexFlag_m">m</label>
+        </span>
+        <span class="formChb">
+            <input type="checkbox" id="regexFlag_u" value="u"><label for="regexFlag_u">u</label>
+        </span>
+        <span class="formTitle">请选择修饰符</span>
     </div>
 
 </main>

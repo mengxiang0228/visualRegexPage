@@ -1,6 +1,6 @@
 class Dom {
     /**
-     * @param nodes {Array|Element|Undefined|Window}
+     * @param nodes {Array:HTMLElement}
      */
     constructor(nodes) {
         if (nodes === undefined) {
@@ -27,6 +27,10 @@ class Dom {
     each(fn) {
         this.nodes.forEach(fn);
         return this;
+    }
+
+    map(fn) {
+        return this.nodes.map(fn);
     }
 
     classNames(index) {
@@ -59,7 +63,7 @@ class Dom {
     }
 
     find(selector) {
-        return new Dom(this[0].querySelector(selector));
+        return new Dom(this[0].querySelectorAll(selector));
     }
 
     val(val) {
@@ -186,5 +190,5 @@ const pushDelegateMap = function (fn, delegateFn) {
 
 
 export default function (selector) {
-    return new Dom(document.querySelector(selector));
+    return new Dom(document.querySelectorAll(selector));
 };

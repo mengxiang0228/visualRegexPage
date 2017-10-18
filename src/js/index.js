@@ -1,6 +1,6 @@
 import '../less/index.js';
 
-import  layout from './layout'
+import  layout from './model'
 
 import visualRegex from 'visual-regex';
 
