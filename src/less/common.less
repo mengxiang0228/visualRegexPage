@@ -1,4 +1,86 @@
-html, body {
-  background-color: pink;
-  border-bottom: 20px solid orange;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
 }
+
+html {
+  text-align: left;
+  font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;
+  background-color: #fff;
+  font-size: 14px;
+  border:1px solid red;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch; //流畅滚动
+  border:1px solid orange;
+}
+
+a, a:visited, a:hover, a:active ,abbr{
+  color: inherit;
+  text-decoration: none;
+}
+
+
+button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: center;
+  user-select: none;
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+a, input, button, textarea, select, [contenteditable], optgroup {
+  outline: none;
+  color: inherit;
+  font-size: inherit;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /*去掉a、input和button点击时的蓝色外边框和灰色半透明背景*/
+}
+
+//a /*, img*/  {
+//  -webkit-touch-callout: none; /*禁止长按链接与图片弹出菜单*/
+//}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+  font-size: inherit;
+}
+
+textarea {
+  resize: none;
+}
+
+input, textarea, div, p {
+  word-break: break-all;
+}
+
+ul, li {
+  list-style: none;
+}
+
+label, input[type="radio"], input[type="checkbox"] {
+  cursor: pointer;
+  user-select: none;
+}
+
+
+
+
+
+
+

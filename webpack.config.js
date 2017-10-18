@@ -38,7 +38,7 @@ module.exports = {
             template: './src/index.html'
         }),
         new ExtractTextWebpackPlugin({
-            filename: 'css/[name].[md5:contenthash:5].css'
+            filename: 'css/[name].[md5:contenthash:32].css'
         })
     ]
 
