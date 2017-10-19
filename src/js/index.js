@@ -1,9 +1,17 @@
 import '../less/index.js';
 
-import  layout from './model'
+import model from './model'
 
-import visualRegex from 'visual-regex';
+import visual from 'visual-regex';
 
 
-
+model
+    .regexChanged
+    .subscribe(reg => {
+        console.log(reg, reg.flags);
+        var canvas;
+        if (reg) {
+            canvas = visual(reg);
+        }
+    })
 

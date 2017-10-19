@@ -13,7 +13,7 @@
   left: 0;
   top: 0;
   background-color: #fff;
-  z-index:1;
+  z-index: 1;
 
   h1 {
     display: inline;
@@ -30,7 +30,57 @@
   left: 0;
   top: @headerHeight;
   height: @asideWidth;
-  background-color: pink;
+  padding: 20px;
+
+  h2 {
+    color: rgba(0, 0, 0, .4);
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    margin-left: 10px;
+    color: rgba(0, 0, 0, .6);
+    li {
+      margin-bottom: 10px;
+
+      span {
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+
+        &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          width: 100%;
+          height: 1px;
+
+          left: 0;
+          bottom: -1px;
+
+          background: rgba(0, 0, 0, .4);
+          background: linear-gradient(
+                  to right,
+                  #fff,
+                  rgba(0, 0, 0, .3) 20%,
+                  rgba(0, 0, 0, .3),
+                  rgba(0, 0, 0, .3) 80%,
+                  #fff
+          );
+          transform: scale(0);
+          transition: transform .3s;
+        }
+
+        &:hover:after {
+          transform: scale(1.5,1);
+        }
+
+      }
+
+    }
+  }
+
 }
 
 .pageMain {
@@ -50,11 +100,39 @@
   line-height: 34px;
   border: 1px solid @borderColor;
   border-radius: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 
-  &.miniTitle{
+  transition: border-color .3s,box-shadow .3s;
+
+  //&:hover{
+  //  border-color: #49a9ee;
+  //  box-shadow: 0 0 0 2px rgba(16,142,233,.2);
+  //}
+
+  &.error{
+    border-color: @errorColor;
+    box-shadow: 0 0 0 2px rgba(240,65,52,.2);
+
     .formTitle{
-      transform:translate(5px,-6px) scale(0.75);
+      color: @errorColor;
+    }
+
+  }
+
+  .formErrorTip{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 100%;
+    margin-top: 3px;
+    font-size: 12px;
+    line-height: 12px;
+    color: @errorColor;
+  }
+
+  &.miniTitle {
+    .formTitle {
+      transform: translate(5px, -6px) scale(0.75);
     }
   }
 
@@ -66,25 +144,25 @@
     transition: transform .3s ease-out;
 
     font-size: 16px;
-    height:16px;
+    height: 16px;
     line-height: 16px;
 
-    left:0;
-    top:0;
-    transform:translate(15px,10px);
+    left: 0;
+    top: 0;
+    transform: translate(15px, 10px);
   }
 
   .formInput {
     width: 100%;
     height: 100%;
-    border:none;
+    border: none;
     border-radius: 5px;
   }
 
-  .formChb{
+  .formChb {
     margin-left: 18px;
 
-    label{
+    label {
       padding-left: 5px;
     }
 

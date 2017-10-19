@@ -74,6 +74,15 @@ class Dom {
         return this;
     }
 
+    html(html) {
+        if (html === undefined) {
+            return this[0].innerHTML;
+        }
+        else {
+            return this.each(node => node.innerHTML = html);
+        }
+    }
+
     on(type, fn) {
         return this.each((node, index) => {
             node.addEventListener(type, fn);
