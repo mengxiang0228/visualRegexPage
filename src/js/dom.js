@@ -83,6 +83,13 @@ class Dom {
         }
     }
 
+    append(newNode) {
+        return this.each(node => {
+            node.appendChild(newNode)
+        });
+    }
+
+
     on(type, fn) {
         return this.each((node, index) => {
             node.addEventListener(type, fn);

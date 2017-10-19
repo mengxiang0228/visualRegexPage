@@ -1,17 +1,19 @@
 import '../less/index.js';
 
-import model from './model'
+import {regexChanged, refreshFigure} from './model'
 
 import visual from 'visual-regex';
 
 
-model
-    .regexChanged
+regexChanged
     .subscribe(reg => {
-        console.log(reg, reg.flags);
         var canvas;
         if (reg) {
+            console.log(reg, reg.flags);
             canvas = visual(reg);
         }
+
+        refreshFigure(canvas);
+
     })
 

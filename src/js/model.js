@@ -94,7 +94,20 @@ var regexChangedObservable = sourceChangedObservable
 // regexChangedObservable.subscribe(val => console.log('regexChanged', val));
 
 
-export default {
-    regexChanged: regexChangedObservable
+var $figure = $('.figure');
+var refreshFigure = function (canvas) {
+    if (canvas) {
+        canvas.style.width=canvas.width/2+'px';
+        canvas.style.height=canvas.height/2+'px';
+        $figure.html('');
+        $figure.append(canvas);
+    }
+    else {
+        $figure.html('Render error!');
+    }
+
 }
+
+export {regexChangedObservable as regexChanged, refreshFigure};
+
 

@@ -73,7 +73,7 @@
         }
 
         &:hover:after {
-          transform: scale(1.5,1);
+          transform: scale(1.5, 1);
         }
 
       }
@@ -102,24 +102,24 @@
   border-radius: 5px;
   margin-bottom: 20px;
 
-  transition: border-color .3s,box-shadow .3s;
+  transition: border-color .3s, box-shadow .3s;
 
   //&:hover{
   //  border-color: #49a9ee;
   //  box-shadow: 0 0 0 2px rgba(16,142,233,.2);
   //}
 
-  &.error{
+  &.error {
     border-color: @errorColor;
-    box-shadow: 0 0 0 2px rgba(240,65,52,.2);
+    box-shadow: 0 0 0 2px rgba(240, 65, 52, .2);
 
-    .formTitle{
+    .formTitle {
       color: @errorColor;
     }
 
   }
 
-  .formErrorTip{
+  .formErrorTip {
     position: absolute;
     width: 100%;
     left: 0;
@@ -169,3 +169,16 @@
   }
 }
 
+.figure {
+  min-height: 50px;
+  padding:20px;
+  border-bottom: 1px solid @borderColor;
+  position: relative;
+
+  canvas {
+   position: relative;
+    margin:0 auto;
+    display: block;
+  }
+
+}
