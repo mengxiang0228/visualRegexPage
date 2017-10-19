@@ -56,8 +56,15 @@
     </div>
 
 
-    <div class="figure">
+    <div class="figure" id="figure">
         <!-- 动态的在figure中添加canvas标签 -->
+    </div>
+
+    <div class="log">
+        <p>var str = "<span class="logInput" id="logInput"><span></span><input></span>"; //输入要匹配的字符串</p>
+        <p>var regex = new RegExp("<span id="logRegSource"></span>","<span id="logRegFlags"></span>");</p>
+        <p>regex.exec( str );</p>
+        <pre class="logOutput" id="logOutput"></pre>
     </div>
 
 </main>

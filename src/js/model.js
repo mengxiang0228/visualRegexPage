@@ -61,7 +61,8 @@ var predefinedChangedObservable = Observable
 var inputChangedObservable = Observable
     .fromEvent($regexInput[0], 'input')
     .map(e => e.target.value)
-    .debounceTime(300);
+    .debounceTime(300)
+    .do(source => console.log('source input changed', source, '---'))
 
 var sourceChangedObservable = predefinedChangedObservable
     .merge(inputChangedObservable)
@@ -74,6 +75,9 @@ var regexChangedObservable = sourceChangedObservable
         location.hash = utils.param(`source=${arr[0]}&flags=${arr[1]}`)
     })
     .map(([source, flags]) => {
+
+        console.log('regex changed', source, flags, '---');
+
         var reg = null;
         try {
             reg = new RegExp(source, flags);
@@ -85,8 +89,13 @@ var regexChangedObservable = sourceChangedObservable
             $regex.addClass('error');
             $regexError.html(err.message);
         }
+
+        if (reg) {
+            reg.expando = [source, flags];
+        }
         return reg;
     });
+
 
 // console.log('catch', regexChangedObservable.catch);
 
@@ -94,19 +103,62 @@ var regexChangedObservable = sourceChangedObservable
 // regexChangedObservable.subscribe(val => console.log('regexChanged', val));
 
 
-var $figure = $('.figure');
+var $figure = $('#figure');
 var refreshFigure = function (canvas) {
     if (canvas) {
-        canvas.style.width=canvas.width/2+'px';
-        canvas.style.height=canvas.height/2+'px';
+        canvas.style.width = canvas.width / 2 + 'px';
+        canvas.style.height = canvas.height / 2 + 'px';
         $figure.html('');
         $figure.append(canvas);
     }
     else {
         $figure.html('Render error!');
     }
-
 }
+
+
+//regex log:
+var $logInput = $('#logInput');
+var $logInputHolder = $logInput.find('span');
+var $logInputTxt = $logInput.find('input');
+
+var $logRegSource = $('#logRegSource');
+var $logRegFlags = $('#logRegFlags');
+
+var $logOutput = $('#logOutput')
+
+Observable.fromEvent($logInputTxt[0], 'input')
+    .map(e => e.target.value)
+    .startWith('')
+    .do(str => {
+        $logInputHolder.html(str);
+    })
+    .debounceTime(300)
+    .distinctUntilChanged()
+    .combineLatest(regexChangedObservable)
+    .subscribe(([str, reg]) => {
+
+        var result = 'Null';
+
+        if (reg) {
+            var [source, flags] = reg.expando;
+            $logRegSource.html(source);
+            $logRegFlags.html(flags);
+
+            console.log('regex log ', source, flags)
+
+            if (source !== '') {
+                let match = reg.exec(str);
+                if (match !== null) {
+                    result = JSON.stringify(match, null, 2);
+                }
+            }
+        }
+
+        $logOutput.html(result);
+
+    })
+
 
 export {regexChangedObservable as regexChanged, refreshFigure};
 

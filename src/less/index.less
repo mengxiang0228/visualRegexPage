@@ -171,14 +171,54 @@
 
 .figure {
   min-height: 50px;
-  padding:20px;
+  padding: 20px;
   border-bottom: 1px solid @borderColor;
   position: relative;
 
   canvas {
-   position: relative;
-    margin:0 auto;
+    position: relative;
+    margin: 0 auto;
     display: block;
   }
 
+}
+
+.log {
+  padding: 20px 0;
+  line-height: 1.5em;
+  overflow: auto;
+
+  p {
+    white-space: nowrap;
+  }
+
+  .logInput {
+    display: inline-block;
+    min-width: 50px;
+    position: relative;
+    line-height: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+    border: 1px solid @borderColor;
+    letter-spacing: 1px;
+
+    input {
+      position: absolute;
+      display: inline-block;
+      width: 100%;
+      border: none;
+      left: 0;
+      top: 0;
+      height: 1.5em;
+      line-height: 1.5em;
+      letter-spacing: 0;
+    }
+  }
+
+  .logOutput {
+    border: 1px solid @borderColor;
+    border-radius: 5px;
+    min-height: 2em;
+    padding:5px;
+  }
 }

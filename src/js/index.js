@@ -8,7 +8,7 @@ import visual from 'visual-regex';
 regexChanged
     .subscribe(reg => {
         var canvas;
-        if (reg) {
+        if (reg && reg.expando[0]) {
             console.log(reg, reg.flags);
             canvas = visual(reg);
         }
