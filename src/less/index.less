@@ -3,23 +3,74 @@
 @headerHeight: 40px;
 @asideWidth: 200px;
 
+@hoverColor: #108ee9;
+
+.underscoreHover() {
+
+  transition: transform .3s;
+
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 1px;
+
+    left: 0;
+    bottom: -1px;
+
+    background: rgba(0, 0, 0, .4);
+    background: linear-gradient(
+            to right,
+            #fff,
+            rgba(0, 0, 0, .3) 20%,
+            rgba(0, 0, 0, .3),
+            rgba(0, 0, 0, .3) 80%,
+            #fff
+    );
+    transform: scale(0);
+    transition: transform .3s;
+  }
+
+  &:hover {
+    //color: @hoverColor;
+    transform: scale(1.1);
+    &:after {
+      transform: scale(1.5, 1);
+    }
+  }
+
+}
+
 .pageHeader {
   padding: 0 20px;
   height: @headerHeight;
   line-height: @headerHeight;
-  border: 1px solid @borderColor;
   position: fixed;
   width: 100%;
   left: 0;
   top: 0;
   background-color: #fff;
   z-index: 1;
+  border-bottom: 1px solid @borderColor;
+  box-sizing: border-box;
 
   h1 {
     display: inline;
     font-weight: bolder;
     font-size: 18px;
     color: #333;
+  }
+
+  .issues {
+
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    margin-top: -0.5em;
+    height: 1em;
+    line-height: 1em;
+    .underscoreHover();
   }
 
 }
@@ -49,32 +100,7 @@
         position: relative;
         cursor: pointer;
 
-        &:after {
-          content: '';
-          display: block;
-          position: absolute;
-          width: 100%;
-          height: 1px;
-
-          left: 0;
-          bottom: -1px;
-
-          background: rgba(0, 0, 0, .4);
-          background: linear-gradient(
-                  to right,
-                  #fff,
-                  rgba(0, 0, 0, .3) 20%,
-                  rgba(0, 0, 0, .3),
-                  rgba(0, 0, 0, .3) 80%,
-                  #fff
-          );
-          transform: scale(0);
-          transition: transform .3s;
-        }
-
-        &:hover:after {
-          transform: scale(1.5, 1);
-        }
+        .underscoreHover();
 
       }
 
@@ -254,7 +280,7 @@
     //width: 100%;
     //margin-right: -1.33%;
     //.clearFix();
-    //overflow: hidden;
+    overflow: hidden;
 
     width: 50%;
     float: left;
@@ -274,11 +300,13 @@
       cursor: default;
 
       border-left: 2px solid transparent;
+      transform-origin: 0 50%;
 
-      &:hover{
-        color: #108ee9;
-        border-color: #108ee9;
-        //font-weight: bolder;
+      &:hover {
+        //color: @hoverColor;
+        border-color: @borderColor;
+
+        transform: scale(1.1);
 
       }
 
@@ -297,6 +325,5 @@
 
     }
   }
-
 
 }
