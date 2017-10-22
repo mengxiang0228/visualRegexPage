@@ -33,6 +33,10 @@ class Dom {
         return this.nodes.map(fn);
     }
 
+    eq(index) {
+        return new Dom(this.nodes[index]);
+    }
+
     classNames(index) {
         return this.nodes[index].className.split(' ').filter((val) => val !== '');
     }
@@ -206,5 +210,10 @@ const pushDelegateMap = function (fn, delegateFn) {
 
 
 export default function (selector) {
-    return new Dom(document.querySelectorAll(selector));
+    if (typeof selector === 'string') {
+        return new Dom(document.querySelectorAll(selector));
+    }
+    else if (selector.nodeType) {
+        return new Dom(selector);
+    }
 };

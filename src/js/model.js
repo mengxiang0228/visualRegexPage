@@ -7,7 +7,7 @@ var $regexInput = $regex.find('input');
 var $regexError = $regex.find('.formErrorTip');
 
 
-//source=xxx&flags=muig
+//source=xxx&flags=muig&match=inputTxt
 var hash = location.hash.replace(/^#/, '');
 var hashObj = utils.parseParam(hash);
 
@@ -32,16 +32,18 @@ $regex.on('click', e => {
 
 //region 修饰符
 var flagObservables = $('#regexFlag').find('input').map(node => {
+
+    node.checked = hashObj.flags.includes(node.value);
+
     return Observable.fromEvent(node, 'change')
         .map(val => node.checked ? node.value : '')
-        .startWith('')
+        .startWith(node.checked ? node.value : '')
 });
 
-var flagChangedObservable = Observable.from(flagObservables)
-    .combineAll()
+var flagChangedObservable = Observable.combineLatest(...flagObservables)
     .map(val => val.join(''))
-    .startWith(hashObj.flags || '')
     .distinctUntilChanged()
+// .do(val => console.log('flag changed,', val))
 
 //endregion
 
@@ -56,13 +58,13 @@ var predefinedChangedObservable = Observable
     .do(reg => {
         $regexInput.val(reg || '')
         $regexInput[0].focus();
-    });
+        // console.log('predefined changed', reg);
+    })
 
 var inputChangedObservable = Observable
     .fromEvent($regexInput[0], 'input')
     .map(e => e.target.value)
     .debounceTime(300)
-    .do(source => console.log('source input changed', source, '---'))
 
 var sourceChangedObservable = predefinedChangedObservable
     .merge(inputChangedObservable)
@@ -72,11 +74,14 @@ var regexChangedObservable = sourceChangedObservable
     .combineLatest(flagChangedObservable)
     .do(arr => {
         // console.log('regexChanged',arr);
-        location.hash = utils.param(`source=${arr[0]}&flags=${arr[1]}`)
+        hashObj.source = arr[0];
+        hashObj.flags = arr[1];
+
+        console.log('regex changed', arr[0], arr[1], '---');
+
+        location.hash = utils.param(hashObj);
     })
     .map(([source, flags]) => {
-
-        console.log('regex changed', source, flags, '---');
 
         var reg = null;
         try {
@@ -94,13 +99,8 @@ var regexChangedObservable = sourceChangedObservable
             reg.expando = [source, flags];
         }
         return reg;
-    });
-
-
-// console.log('catch', regexChangedObservable.catch);
-
-
-// regexChangedObservable.subscribe(val => console.log('regexChanged', val));
+    })
+    .publishBehavior().refCount()
 
 
 var $figure = $('#figure');
@@ -127,11 +127,17 @@ var $logRegFlags = $('#logRegFlags');
 
 var $logOutput = $('#logOutput')
 
+if (hashObj.match) {
+    $logInputTxt.val(hashObj.match);
+}
+
 Observable.fromEvent($logInputTxt[0], 'input')
     .map(e => e.target.value)
-    .startWith('')
+    .startWith(hashObj.match)
     .do(str => {
         $logInputHolder.html(str);
+        hashObj.match = str;
+        location.hash = utils.param(hashObj);
     })
     .debounceTime(300)
     .distinctUntilChanged()
@@ -158,7 +164,6 @@ Observable.fromEvent($logInputTxt[0], 'input')
         $logOutput.html(result);
 
     })
-
 
 export {regexChangedObservable as regexChanged, refreshFigure};
 
