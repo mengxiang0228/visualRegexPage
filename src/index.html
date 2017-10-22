@@ -18,7 +18,7 @@
 
 <header class="pageHeader">
     <h1>正则可视化</h1>
-    <small>by <abbr title="wangweilin"></abbr></small>
+    <small>by <abbr title="wangweilin">wwl</abbr></small>
 </header>
 <aside class="pageAside" id="pageAside">
 
@@ -65,6 +65,54 @@
         <p>var regex = new RegExp("<span id="logRegSource"></span>","<span id="logRegFlags"></span>");</p>
         <p>regex.exec( str );</p>
         <pre class="logOutput" id="logOutput"></pre>
+    </div>
+
+    <div class="syntax">
+        <h2>支持语法</h2>
+        <ul>
+            <li><span class="key">[abc]</span><span class="desc">单个字符:a或b或c</span></li>
+            <li><span class="key">[^abc]</span><span class="desc">a,b,c以外的单个字符</span></li>
+            <li><span class="key">[a-zA-Z0-9]</span><span class="desc">字符范围</span></li>
+            <li><span class="key">.</span><span class="desc">任意字符</span></li>
+            <li><span class="key">\s</span><span class="desc">空字符</span></li>
+            <li><span class="key">\S</span><span class="desc">非空字符</span></li>
+            <li><span class="key">\d</span><span class="desc">数字字符</span></li>
+            <li><span class="key">\D</span><span class="desc">非数字字符</span></li>
+            <li><span class="key">\w</span><span class="desc">单词(字母，数字，下划线)</span></li>
+            <li><span class="key">\W</span><span class="desc">非单词</span></li>
+            <li><span class="key">\b</span><span class="desc">单词边界</span></li>
+            <li><span class="key">\b</span><span class="desc">非单词边界</span></li>
+            <li><span class="key">^</span><span class="desc">开头</span></li>
+            <li><span class="key">$</span><span class="desc">结尾</span></li>
+            <li><span class="key">(...)</span><span class="desc">分组</span></li>
+            <li><span class="key">(a|b)</span><span class="desc">a或b</span></li>
+            <li><span class="key">a*</span><span class="desc">重复0次或多次</span></li>
+            <li><span class="key">a?</span><span class="desc">重复0次或1次</span></li>
+            <li><span class="key">a+</span><span class="desc">重复1次或多次</span></li>
+            <li><span class="key">a{3}</span><span class="desc">重复3次</span></li>
+        </ul>
+        <ul>
+            <li><span class="key">a{3,}</span><span class="desc">重复3次或多次</span></li>
+            <li><span class="key">a{3,5}</span><span class="desc">重复3到5次</span></li>
+            <li><span class="key">?</span><span class="desc">非贪婪匹配</span></li>
+            <li><span class="key">(?:abc)</span><span class="desc">非捕获分组</span></li>
+            <li><span class="key">(?=abc)</span><span class="desc">正向匹配abc</span></li>
+            <li><span class="key">(?!abc)</span><span class="desc">正向不匹配abc</span></li>
+            <li><span class="key">\xhh</span><span class="desc">十六进制hh字符</span></li>
+            <li><span class="key">\uhhhh</span><span class="desc">十六进制hhhh字符</span></li>
+            <li><span class="key">\u{hhhh}</span><span class="desc">(仅当设置了u标志时)十六进制hhhh字符</span></li>
+            <li><span class="key">\cX</span><span class="desc">控制字符</span></li>
+            <li><span class="key">\0</span><span class="desc">空字符</span></li>
+            <li><span class="key">\a</span><span class="desc">alert字符</span></li>
+            <li><span class="key">\t</span><span class="desc">制表符</span></li>
+            <li><span class="key">\n</span><span class="desc">换行符</span></li>
+            <li><span class="key">\v</span><span class="desc">垂直制表符</span></li>
+            <li><span class="key">\f</span><span class="desc">换页符</span></li>
+            <li><span class="key">\r</span><span class="desc">回车符</span></li>
+            <li><span class="key">\e</span><span class="desc">escape字符</span></li>
+            <li><span class="key">[\b]</span><span class="desc">退格符</span></li>
+
+        </ul>
     </div>
 
 </main>

@@ -15,8 +15,9 @@ console.log('hash', hashObj)
 
 Observable.fromEvent($regexInput[0], 'focus').map(e => true)
     .merge(Observable.fromEvent($regexInput[0], 'blur').map(e => false))
-    .debounceTime(200)
+    // .debounceTime(200)  //如果添加debounce，则predefinedChangedObservable首次focus不会响应
     .subscribe((isFocus) => {
+        console.log('regexInput focus/blur callback');
         if ($regexInput.val().trim() !== '' || isFocus) {
             $regex.addClass('miniTitle');
         }
@@ -58,7 +59,7 @@ var predefinedChangedObservable = Observable
     .do(reg => {
         $regexInput.val(reg || '')
         $regexInput[0].focus();
-        // console.log('predefined changed', reg);
+        console.log('predefined changed', reg, 'regexInput focus', $regexInput[0]);
     })
 
 var inputChangedObservable = Observable
