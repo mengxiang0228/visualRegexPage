@@ -3,7 +3,6 @@
 @media screen and (max-width: 600px) {
 
   .pageHeader {
-    z-index:2;
     .issues {
       display: none !important;
     }
@@ -22,6 +21,7 @@
     left:100%;
     padding-top: @headerHeight;
     transition: transform 0.3s ease-out;
+    overflow: auto;
 
     h2{
       display: none;
@@ -33,24 +33,21 @@
       line-height: 2em;
     }
 
+    .close{
+      position: absolute;
+      display: inline-block;
+      transform:scale(3);
+      padding:0 10px;
+      right:20px;
+      top:0;
+      line-height: @headerHeight;
+      color: #fff;
+    }
+
   }
 
   .showPageAside{
-    .pageHeader{
-      background-color: transparent;
-      color: #fff;
-      h1{
-        color: #fff;
-      }
-      .predefined{
-        display: none !important;
-      }
-      .close{
-        display: inline-block;
-        transform:scale(2);
-        padding:0 10px;
-      }
-    }
+
     .pageAside{
       transform: translateX(-100%);
     }

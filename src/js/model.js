@@ -32,7 +32,7 @@ Observable.fromEvent($regexInput[0], 'focus').map(e => true)
     });
 
 $regex.on('click', e => {
-    $regexInput[0].focus();
+    $regexInput[0].dispatchEvent(new Event('focus'));
 })
 
 
@@ -71,7 +71,7 @@ var predefinedChangedObservable = Observable
         });
 
         $regexInput.val(source || '')
-        $regexInput[0].focus();
+        $regexInput[0].dispatchEvent(new Event('focus'));
         // $regexInput[0].dispatchEvent(new Event('input'));
     })
 
