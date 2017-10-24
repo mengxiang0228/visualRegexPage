@@ -1,6 +1,7 @@
 import $ from './dom';
 import Observable from './Observable';
 import utils from 'wwl-utils';
+import predefinedRegs from './predefined';
 
 var $regex = $('#regexSource');
 var $regexInput = $regex.find('input');
@@ -10,6 +11,10 @@ var $regexError = $regex.find('.formErrorTip');
 //source=xxx&flags=muig&match=inputTxt
 var hash = location.hash.replace(/^#/, '');
 var hashObj = utils.parseParam(hash);
+hashObj.flags === undefined && (hashObj.flags = '');
+hashObj.source === undefined && (hashObj.source = '');
+hashObj.match === undefined && (hashObj.match = '');
+
 
 console.log('hash', hashObj)
 
@@ -32,57 +37,69 @@ $regex.on('click', e => {
 
 
 //region 修饰符
-var flagObservables = $('#regexFlag').find('input').map(node => {
+var $regexFlags = $('#regexFlag').find('input');
 
-    node.checked = hashObj.flags.includes(node.value);
 
-    return Observable.fromEvent(node, 'change')
-        .map(val => node.checked ? node.value : '')
-        .startWith(node.checked ? node.value : '')
-});
-
-var flagChangedObservable = Observable.combineLatest(...flagObservables)
-    .map(val => val.join(''))
+var flagChangedObservable = Observable
+    .create(observer => {
+        $('#regexFlag').onDelegate('change', 'input', (e) => {
+            observer.next($regexFlags.map(node => node.checked ? node.value : '').join(''));
+        })
+    })
     .distinctUntilChanged()
-// .do(val => console.log('flag changed,', val))
-
+    .do(val => console.log('flag changed,', val))
 //endregion
 
 
 var predefinedChangedObservable = Observable
     .create(observer => {
         $('#pageAside').onDelegate('click', 'span', e => {
-            observer.next(e.target.dataset.reg);
+            var reg = predefinedRegs[e.target.dataset.reg] || {};
+            observer.next({
+                source: reg.source || '',
+                flags: reg.flags || ''
+            });
         });
     })
-    .startWith(hashObj.source || '')
-    .do(reg => {
-        $regexInput.val(reg || '')
+    .startWith(hashObj)
+    .do(({source, flags}) => {
+
+        console.log('predefined changed', source, flags);
+        $regexFlags.each(node => {
+            node.checked = flags.includes(node.value)
+            // node.dispatchEvent(new Event('change'));
+        });
+
+        $regexInput.val(source || '')
         $regexInput[0].focus();
-        console.log('predefined changed', reg, 'regexInput focus', $regexInput[0]);
+        // $regexInput[0].dispatchEvent(new Event('input'));
     })
 
 var inputChangedObservable = Observable
     .fromEvent($regexInput[0], 'input')
     .map(e => e.target.value)
+    .startWith(hashObj.source)
     .debounceTime(300)
+    .combineLatest(flagChangedObservable.startWith(hashObj.flags))
+    .map(([source, flags]) => {
+        console.log('input changed', source, flags);
+        return {source, flags}
+    })
 
-var sourceChangedObservable = predefinedChangedObservable
-    .merge(inputChangedObservable)
-    .distinctUntilChanged()
 
-var regexChangedObservable = sourceChangedObservable
-    .combineLatest(flagChangedObservable)
-    .do(arr => {
-        // console.log('regexChanged',arr);
-        hashObj.source = arr[0];
-        hashObj.flags = arr[1];
+var regexChangedObservable = inputChangedObservable
+    .merge(predefinedChangedObservable)
+    .distinctUntilChanged((pre, cur) => pre.source === cur.source && pre.flags === cur.flags)
+    .do(({source, flags}) => {
 
-        console.log('regex changed', arr[0], arr[1], '---');
+        hashObj.source = source;
+        hashObj.flags = flags;
+
+        console.log('regex changed', source, flags, '---');
 
         location.hash = utils.param(hashObj);
     })
-    .map(([source, flags]) => {
+    .map(({source, flags}) => {
 
         var reg = null;
         try {

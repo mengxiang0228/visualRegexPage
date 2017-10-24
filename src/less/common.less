@@ -1,10 +1,10 @@
-
 @import "./util.less";
 
 * {
   margin: 0;
   padding: 0;
-  box-sizing: content-box;
+  //box-sizing: content-box;
+  box-sizing: border-box;
 }
 
 html {
@@ -12,7 +12,6 @@ html {
   font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;
   background-color: #fff;
   font-size: 14px;
-  border:1px solid red;
   color: @htmlColor;
 }
 
@@ -20,14 +19,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-overflow-scrolling: touch; //流畅滚动
-  border:1px solid orange;
 }
 
-a, a:visited, a:hover, a:active ,abbr{
+a, a:visited, a:hover, a:active, abbr {
   color: inherit;
   text-decoration: none;
 }
-
 
 button {
   border: none;
@@ -50,9 +47,13 @@ a, input, button, textarea, select, [contenteditable], optgroup {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /*去掉a、input和button点击时的蓝色外边框和灰色半透明背景*/
 }
 
-//a /*, img*/  {
-//  -webkit-touch-callout: none; /*禁止长按链接与图片弹出菜单*/
-//}
+ul, li, div, aside {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+a /*, img*/ {
+  -webkit-touch-callout: none; /*禁止长按链接与图片弹出菜单*/
+}
 
 table {
   border-collapse: collapse;
@@ -82,6 +83,65 @@ label, input[type="radio"], input[type="checkbox"] {
   user-select: none;
 }
 
+input[type=checkbox] {
+  @width: 14px;
+  @height: 14px;
+
+  display: none;
+  + label {
+    position: relative;
+    padding-left: @width+8px;
+    &:before {
+      content: '';
+      height: @width;
+      width: @height;
+      display: inline-block;
+      box-sizing: border-box;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      margin-top: @height/2*-1;
+      border-radius: 2px;
+      border: 1px solid #d9d9d9
+    }
+  }
+
+  &:checked + label {
+    &:before {
+      background-color: #108ee9;
+      border-color: #108ee9;
+      animation: checkboxEffect .4s ease;
+    }
+    &:after {
+      content: '';
+      width: 8px;
+      height: 4px;
+      display: inline-block;
+      position: absolute;
+      border: 2px solid #fff;
+      border-top: none;
+      border-right: none;
+      transform: rotate(-45deg);
+      left: 2px;
+      top: 4px;
+    }
+  }
+}
+
+@keyframes checkboxEffect {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: .7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
 
 

@@ -13,6 +13,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="renderer" content="webkit">
     <base target="_blank"/>
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="format-detection" content="email=no"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+
+
 </head>
 <body>
 
@@ -20,23 +28,39 @@
     <h1>正则可视化</h1>
     <small>by <abbr title="wangweilin">wwl</abbr></small>
 
-    <a href="https://gitee.com/w-wl/visualRegexPage/issues" target="_blank" class="issues"><span>Issues</span></a>
+    <span class="headerLink">
+            <a class="issues" href="https://gitee.com/w-wl/visualRegexPage/issues" target="_blank">Issues</a>
+            <a class="predefined" id="headerShowReg" href="javascript:void(0)">常用正则</a>
+            <a class="close" id="headerHideReg" href="javascript:void(0)">×</a>
+    </span>
 </header>
 <aside class="pageAside" id="pageAside">
 
     <h2>常用正则 :</h2>
     <ul>
-        <li><span data-reg="email">Email</span></li>
         <li><span data-reg="url">URL</span></li>
-        <li><span data-reg="id">身份证</span></li>
+        <li><span data-reg="email">Email</span></li>
+        <li><span data-reg="postcode">邮编</span></li>
+        <li><span data-reg="idNum">身份证</span></li>
         <li><span data-reg="trim">首尾空格</span></li>
+        <li><span data-reg="singleChar">半角字符</span></li>
+        <li><span data-reg="ie">userAgent检测IE</span></li>
+        <li><span data-reg="chrome">userAgent检测Chrome</span></li>
+        <li><span data-reg="safari">userAgent检测Safari</span></li>
+        <li><span data-reg="firefox">userAgent检测Firefox</span></li>
+        <li><span data-reg="ios">userAgent检测IOS</span></li>
+        <li><span data-reg="android">userAgent检测Android</span></li>
+        <li><span data-reg="wechat">userAgent检测微信</span></li>
+        <li><span data-reg="sp1">m~n个数字</span></li>
+        <li><span data-reg="sp2">只能是英文、数字、下划线</span></li>
+        <li><span data-reg="sp3">字母开头且只能是英文数字下划线,6~18位</span></li>
     </ul>
 
 </aside>
 <main class="pageMain">
 
     <div class="formCtl" id="regexSource">
-        <input class="formInput">
+        <input class="formInput" autofocus>
         <span class="formTitle">请输入正则表达式</span>
         <span class="formErrorTip"></span>
     </div>

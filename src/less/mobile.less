@@ -1,0 +1,68 @@
+@import "./util.less";
+
+@media screen and (max-width: 600px) {
+
+  .pageHeader {
+    z-index:2;
+    .issues {
+      display: none !important;
+    }
+    .predefined {
+      display: inline-block !important;
+    }
+  }
+
+  .pageAside {
+    z-index: 1;
+    position: fixed;
+    width: 100%;
+    height:100%;
+    background-color:#292929;
+    top:0;
+    left:100%;
+    padding-top: @headerHeight;
+    transition: transform 0.3s ease-out;
+
+    h2{
+      display: none;
+    }
+
+    li {
+      color: #fff;
+      font-size: 1.5em;
+      line-height: 2em;
+    }
+
+  }
+
+  .showPageAside{
+    .pageHeader{
+      background-color: transparent;
+      color: #fff;
+      h1{
+        color: #fff;
+      }
+      .predefined{
+        display: none !important;
+      }
+      .close{
+        display: inline-block;
+        transform:scale(2);
+        padding:0 10px;
+      }
+    }
+    .pageAside{
+      transform: translateX(-100%);
+    }
+  }
+
+  .pageMain {
+    margin-left: 0;
+  }
+
+  .syntax {
+    ul {
+      width: 100%;
+    }
+  }
+}
