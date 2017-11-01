@@ -121,6 +121,7 @@ class Dom {
     onDelegate(type, selector, fn) {
 
         //代理的目标node
+        // 存在潜在bug: 如果代理的子节点是动态插入的，则提前查找会有问题。
         let tarNodes = this.find(selector).nodes;
 
         return this.each((node) => {

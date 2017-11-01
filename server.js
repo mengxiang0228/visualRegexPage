@@ -21,6 +21,7 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const app = express();
 const config = require('./webpack.config');
 
+config.output.publicPath='/';
 
 config.plugins = config.plugins.concat([
     new webpack.HotModuleReplacementPlugin(),
