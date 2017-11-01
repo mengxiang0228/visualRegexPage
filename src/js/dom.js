@@ -87,6 +87,15 @@ class Dom {
         }
     }
 
+    text(txt) {
+        if (txt === undefined) {
+            return this[0].innerText;
+        }
+        else {
+            return this.each(node => node.innerText = txt);
+        }
+    }
+
     append(newNode) {
         return this.each(node => {
             node.appendChild(newNode)
@@ -175,7 +184,7 @@ const nodeExpando = function (node) {
 };
 const getEventCache = function (node, type) {
     return nodeExpando(node)[type];
-}
+};
 const pushEventCache = function (node, type, fn) {
     var data = nodeExpando(node);
     if (!data[type]) {
@@ -184,7 +193,7 @@ const pushEventCache = function (node, type, fn) {
     else {
         data[type].push(fn);
     }
-}
+};
 const removeEventCache = function (node, type, fn) {
     var data = nodeExpando(node);
     var index;
@@ -197,15 +206,15 @@ const removeEventCache = function (node, type, fn) {
     if (data[type].length === 0) {
         delete data[type]
     }
-}
+};
 const clearEventCache = function (node, type) {
     delete nodeExpando(node)[type];
-}
+};
 
 
 const pushDelegateMap = function (fn, delegateFn) {
 
-}
+};
 
 //endregion
 

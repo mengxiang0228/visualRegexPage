@@ -153,7 +153,7 @@ Observable.fromEvent($logInputTxt[0], 'input')
     .map(e => e.target.value)
     .startWith(hashObj.match)
     .do(str => {
-        $logInputHolder.html(str);
+        $logInputHolder.text(str);
         hashObj.match = str;
         location.hash = utils.param(hashObj);
     })
