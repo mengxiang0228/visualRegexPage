@@ -7,6 +7,8 @@ var $regex = $('#regexSource');
 var $regexInput = $regex.find('input');
 var $regexError = $regex.find('.formErrorTip');
 
+var $regexFlags = $('#regexFlag').find('input');
+
 
 //source=xxx&flags=muig&match=inputTxt
 var hash = location.hash.replace(/^#/, '');
@@ -33,22 +35,7 @@ Observable.fromEvent($regexInput[0], 'focus').map(e => true)
 
 $regex.on('click', e => {
     $regexInput[0].dispatchEvent(new Event('focus'));
-})
-
-
-//region 修饰符
-var $regexFlags = $('#regexFlag').find('input');
-
-
-var flagChangedObservable = Observable
-    .create(observer => {
-        $('#regexFlag').onDelegate('change', 'input', (e) => {
-            observer.next($regexFlags.map(node => node.checked ? node.value : '').join(''));
-        })
-    })
-    .distinctUntilChanged()
-    .do(val => console.log('flag changed,', val))
-//endregion
+});
 
 
 var predefinedChangedObservable = Observable
@@ -73,22 +60,34 @@ var predefinedChangedObservable = Observable
         $regexInput.val(source || '')
         $regexInput[0].dispatchEvent(new Event('focus'));
         // $regexInput[0].dispatchEvent(new Event('input'));
-    })
+    });
 
-var inputChangedObservable = Observable
+var predefinedSourceObservable = predefinedChangedObservable.map(({source}) => source);
+var predefinedFlagsObservable = predefinedChangedObservable.map(({flags}) => flags);
+
+
+var flagsObservable = Observable
+    .create(observer => {
+        $('#regexFlag').onDelegate('change', 'input', (e) => {
+            observer.next($regexFlags.map(node => node.checked ? node.value : '').join(''));
+        })
+    })
+    .merge(predefinedFlagsObservable)
+    .do(val => console.log('flag changed,', val));
+
+
+var sourceObservable = Observable
     .fromEvent($regexInput[0], 'input')
     .map(e => e.target.value)
-    .startWith(hashObj.source)
     .debounceTime(300)
-    .combineLatest(flagChangedObservable.startWith(hashObj.flags))
+    .merge(predefinedSourceObservable);
+
+
+var regexChangedObservable = sourceObservable
+    .combineLatest(flagsObservable)
     .map(([source, flags]) => {
-        console.log('input changed', source, flags);
-        return {source, flags}
+        return {source, flags};
     })
-
-
-var regexChangedObservable = inputChangedObservable
-    .merge(predefinedChangedObservable)
     .distinctUntilChanged((pre, cur) => pre.source === cur.source && pre.flags === cur.flags)
     .do(({source, flags}) => {
 
