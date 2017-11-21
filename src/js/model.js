@@ -18,7 +18,7 @@ hashObj.source === undefined && (hashObj.source = '');
 hashObj.match === undefined && (hashObj.match = '');
 
 
-console.log('hash', hashObj)
+console.log('hash', hashObj);
 
 Observable.fromEvent($regexInput[0], 'focus').map(e => true)
     .merge(Observable.fromEvent($regexInput[0], 'blur').map(e => false))
@@ -34,7 +34,11 @@ Observable.fromEvent($regexInput[0], 'focus').map(e => true)
     });
 
 $regex.on('click', e => {
-    $regexInput[0].dispatchEvent(new Event('focus'));
+    //dispatchEvent只是触发事件，没有光标。
+    //focus()会使input获得光标
+    // $regexInput[0].dispatchEvent(new Event('focus'));
+    $regexInput[0].focus();
+
 });
 
 
