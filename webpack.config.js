@@ -35,6 +35,14 @@ module.exports = {
                     // fallback: ['style-loader'] //不清楚fallback的作用，先注掉
                 })
             },
+            {
+                test: /\.css$/,
+                use: ExtractTextWebpackPlugin.extract({
+                    use: [
+                        {loader: 'css-loader', options: {minimize: true}}
+                    ]
+                })
+            },
             //npm install --save-dev babel-loader babel-core babel-preset-env
             //npm install --save-dev babel-plugin-transform-runtime
             //npm install --save babel-runtime

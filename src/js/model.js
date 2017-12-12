@@ -2,6 +2,11 @@ import $ from './dom';
 import Observable from './Observable';
 import utils from 'wwl-utils';
 import predefinedRegs from './predefined';
+import hljs from 'highlight.js/lib/highlight'
+import jsonCss from 'highlight.js/styles/default.css'
+
+hljs.registerLanguage('json', require('highlight.js/lib/languages/json'));
+
 
 var $regex = $('#regexSource');
 var $regexInput = $regex.find('input');
@@ -61,7 +66,7 @@ var predefinedChangedObservable = Observable
             // node.dispatchEvent(new Event('change'));
         });
 
-        $regexInput.val(source || '')
+        $regexInput.val(source || '');
         $regexInput[0].dispatchEvent(new Event('focus'));
         // $regexInput[0].dispatchEvent(new Event('input'));
     });
@@ -121,7 +126,7 @@ var regexChangedObservable = sourceObservable
         }
         return reg;
     })
-    .publishBehavior().refCount()
+    .publishBehavior().refCount();
 
 
 var $figure = $('#figure');
@@ -135,28 +140,33 @@ var refreshFigure = function (canvas) {
     else {
         $figure.html('Render error!');
     }
-}
+};
 
 
 //regex log:
 var $logInput = $('#logInput');
 var $logInputHolder = $logInput.find('span');
-var $logInputTxt = $logInput.find('input');
+var $logInputTxt = $logInput.find('textarea');
+
 
 var $logRegSource = $('#logRegSource');
 var $logRegFlags = $('#logRegFlags');
 
-var $logOutput = $('#logOutput')
+var $logOutput = $('#logOutput');
 
 if (hashObj.match) {
     $logInputTxt.val(hashObj.match);
 }
+
+
+
 
 Observable.fromEvent($logInputTxt[0], 'input')
     .map(e => e.target.value)
     .startWith(hashObj.match)
     .do(str => {
         $logInputHolder.text(str);
+        $logInputHolder.htmlAppend('<br/>');
         hashObj.match = str;
         location.hash = utils.param(hashObj);
     })
@@ -172,19 +182,24 @@ Observable.fromEvent($logInputTxt[0], 'input')
             $logRegSource.html(source);
             $logRegFlags.html(flags);
 
-            console.log('regex log ', source, flags)
+            console.log('regex log ', source, flags,reg,str);
+
 
             if (source !== '') {
                 let match = reg.exec(str);
                 if (match !== null) {
                     result = JSON.stringify(match, null, 2);
                 }
+                // console.log('regex log result:',match,reg.exec(str));
             }
+            reg.lastIndex=0;
         }
 
-        $logOutput.html(result);
 
-    })
+        $logOutput.html(result);
+        hljs.highlightBlock($logOutput[0]);
+
+    });
 
 export {regexChangedObservable as regexChanged, refreshFigure};
 

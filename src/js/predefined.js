@@ -52,8 +52,8 @@ export default {
         flags: ''
     },
 
-    sp1:{   //m-n个数字
-        source:'^\\d{m,n}$'
+    sp1:{   //6-9个数字
+        source:'^\\d{6,9}$'
     },
     sp2:{   //只能是英文、数字、下划线
         source:'^\\w+$',

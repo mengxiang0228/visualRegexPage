@@ -24,18 +24,31 @@
 </head>
 <body>
 
-<header class="pageHeader">
-    <h1>正则可视化</h1>
-    <small class="headerAuthor">by <a href="/" target="_self"><abbr title="wangweilin">wwl</abbr></a></small>
+<nav>
+    <h1>
+        正则可视化
+        <small>by <a href="/" target="_blank"><abbr title="WangWeiLin">WangWL</abbr></a></small>
+    </h1>
 
-    <span class="headerLink">
-            <a class="issues" href="https://gitee.com/w-wl/visualRegexPage/issues" target="_blank">Issues</a>
-            <a class="predefined" id="headerShowReg" href="javascript:void(0)">常用正则</a>
+    <span class="rightLink">
+        <a href="https://gitee.com/w-wl/visualRegexPage/issues">Issues</a>
     </span>
-</header>
+
+</nav>
+
+<div class="topBtn">
+    <button class="asideBtn" id="toggleAside">
+        <span class="asideBtnIcon">
+            <span class="iconItem iconBarTop"></span>
+            <span class="iconItem iconBarMid"></span>
+            <span class="iconItem iconBarMid"></span>
+            <span class="iconItem iconBarBot"></span>
+        </span>
+        常用正则
+    </button>
+</div>
+
 <aside class="pageAside" id="pageAside">
-    <a class="close" id="headerHideReg" href="javascript:void(0)">×</a>
-    <h2>常用正则 :</h2>
     <ul>
         <li><span data-reg="url">URL</span></li>
         <li><span data-reg="email">Email</span></li>
@@ -56,6 +69,7 @@
     </ul>
 
 </aside>
+
 <main class="pageMain">
 
     <div class="formCtl" id="regexSource">
@@ -86,7 +100,11 @@
     </div>
 
     <div class="log">
-        <p>var str = "<span class="logInput" id="logInput"><span></span><input></span>"; //输入要匹配的字符串</p>
+        <p>var str = "<span class="logInput" id="logInput">
+                <span class="logInputHolder"></span>
+                <textarea></textarea>
+            </span>"; //输入要匹配的字符串
+        </p>
         <p>var regex = new RegExp("<span id="logRegSource"></span>","<span id="logRegFlags"></span>");</p>
         <p>regex.exec( str );</p>
         <pre class="logOutput" id="logOutput"></pre>
@@ -141,6 +159,7 @@
     </div>
 
 </main>
+
 
 </body>
 </html>

@@ -1,3 +1,28 @@
+var call = Function.prototype.call;
+var slice = call.bind(Array.prototype.slice);
+
+var docEle = document.documentElement;
+var win = window;
+
+//arr为数组，每一项为类数组
+var uniqNest = function (arr) {
+    var result = [];
+
+    var cur;
+    arr.forEach(function (items) {
+        for (var i = 0, len = items.length; i < len; i++) {
+            cur = items[i];
+            if (!result.includes(cur)) {
+                result.push(cur);
+            }
+        }
+    })
+
+    return result;
+
+}
+
+
 class Dom {
     /**
      * @param nodes {Array:HTMLElement}
@@ -33,46 +58,91 @@ class Dom {
         return this.nodes.map(fn);
     }
 
+
     eq(index) {
         return new Dom(this.nodes[index]);
     }
 
+    first() {
+        return this.eq(0)
+    }
+
+    last() {
+        return this.eq(this.length - 1);
+    }
+
     classNames(index) {
-        return this.nodes[index].className.split(' ').filter((val) => val !== '');
+        return slice(this.nodes[index].classList);
     }
 
     addClass(...names) {
-        var existNames;
-        var addNames;
         return this.each((node, index) => {
-            existNames = this.classNames(index);
-            addNames = names.filter(name => !existNames.includes(name));
-            if (addNames.length > 0) {
-                node.className = existNames.concat(addNames).join(' ');
-            }
+            node.classList.add(...names);
         })
     }
 
     removeClass(...names) {
         return this.each((node, index) => {
-            node.className = this.classNames(index)
-                .filter(name => !names.includes(name))
-                .join(' ');
+            node.classList.remove(...names);
         })
-
     }
+
+    toggleClass(...names) {
+        var existNames,
+            delNames,
+            addNames;
+        return this.each((node, index) => {
+            existNames = this.classNames(index);
+            delNames = [];
+            addNames = [];
+            names.forEach((name) => {
+                if (existNames.includes(name)) {
+                    delNames.push(name);
+                }
+                else {
+                    addNames.push(name);
+                }
+            });
+            if (delNames.length) {
+                this.removeClass.apply(this, delNames);
+            }
+            if (addNames.length) {
+                this.addClass.apply(this, addNames)
+            }
+        });
+    }
+
+    hasClass(name) {
+        return this.nodes.some((node) => node.classList.contains(name))
+    }
+
 
     parent() {
-        return new Dom(this[0].parentNode);
+        return new Dom(this.map((node) => node.parentNode));
     }
 
+    children() {
+        return new Dom(
+            uniqNest(
+                this.map((node) => node.children)
+            )
+        )
+    }
+
+
     find(selector) {
-        return new Dom(this[0].querySelectorAll(selector));
+
+        return new Dom(
+            uniqNest(
+                this.map((node) => node.querySelectorAll(selector))
+            ))
+
+
     }
 
     val(val) {
         if (val === undefined) {
-            return this[0].value;
+            return this.map((node) => node.value || '').join('');
         }
         else this.each(node => node.value = val);
         return this;
@@ -87,13 +157,53 @@ class Dom {
         }
     }
 
+    htmlAppend(html) {
+        return this.each(
+            (node) => node.innerHTML = node.innerHTML + html
+        )
+    }
+
     text(txt) {
         if (txt === undefined) {
-            return this[0].innerText;
+            return this.map((node) => node.innerText).join('');
         }
         else {
             return this.each(node => node.innerText = txt);
         }
+    }
+
+    //name: 和style.cssProperty形式一致，使用驼峰形式
+    style(name, val) {
+
+        var vals = {};
+
+        if (typeof name === 'string') {
+            if (val === undefined) {
+                // return this[0].style.getPropertyValue(name);
+                return this[0].style[name];
+            }
+            else vals[name] = val;
+        }
+
+        else if (typeof name === 'object') {
+            vals = name;
+        }
+        else return this;
+
+        for (var key in vals) {
+            this.each(function (node) {
+                // console.log('style add', key, vals[key])
+                // node.style.setProperty(key, vals[name]);
+                node.style[key] = vals[key];
+            })
+        }
+
+        return this;
+    }
+
+    maxScroll(index = 0) {
+        var node = this[index];
+        return node.scrollHeight - node.clientHeight;
     }
 
     append(newNode) {
@@ -102,9 +212,24 @@ class Dom {
         });
     }
 
+    remove() {
+        return this.each(node => {
+            node.parentNode.removeChild(node);
+        });
+    }
+
+
+    offset(index = 0) {
+        var box = this[index].getBoundingClientRect();
+        return {
+            x: box.left + (win.pageXOffset || docEle.scrollLeft || document.body.scrollLeft) - docEle.clientLeft,
+            y: box.top + (win.pageYOffset || docEle.scrollTop || document.body.scrollTop ) - docEle.clientTop
+        }
+    }
 
     on(type, fn) {
         return this.each((node, index) => {
+            // console.log('addEventListener', node, fn);
             node.addEventListener(type, fn);
             pushEventCache(node, type, fn);
         })
@@ -127,18 +252,21 @@ class Dom {
         })
     }
 
-    onDelegate(type, selector, fn) {
 
-        //代理的目标node
-        // 存在潜在bug: 如果代理的子节点是动态插入的，则提前查找会有问题。
-        let tarNodes = this.find(selector).nodes;
+    onDelegate(type, selector, fn) {
 
         return this.each((node) => {
 
             let listener = function (e) {
-                if (tarNodes.includes(e.target)) {
-                    fn.apply(this, arguments);
+
+                let tarNodes = node.querySelectorAll(selector);
+                var i = 0, len = tarNodes.length;
+                for (; i < len; i++) {
+                    if (tarNodes[i] === e.target) {
+                        fn.apply(e.target, arguments);
+                    }
                 }
+
             }
 
             listener.isDelegate = true;
@@ -212,18 +340,25 @@ const clearEventCache = function (node, type) {
 };
 
 
-const pushDelegateMap = function (fn, delegateFn) {
-
-};
-
 //endregion
+
+
+['offset', 'client', 'scroll'].forEach(function (prefix) {
+    ['Height', 'Width', 'Top', 'Left'].forEach(function (suffix) {
+        var prop = prefix + suffix;
+        Dom.prototype[prop] = function (index = 0) {
+            return this[index][prop];
+        };
+    });
+})
 
 
 export default function (selector) {
     if (typeof selector === 'string') {
         return new Dom(document.querySelectorAll(selector));
     }
-    else if (selector.nodeType) {
+    else {
         return new Dom(selector);
     }
+
 };
