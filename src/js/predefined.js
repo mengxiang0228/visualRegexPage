@@ -1,10 +1,10 @@
 export default {
     url: {
-        source: '^https?:\\/\\/(([a-zA-Z0-9_-])+(\\.)?)*(:\\d+)?(\\/((\\.)?(\\?)?=?&?[a-zA-Z0-9_-](\\?)?)*)*$',
+        source: /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/.source,
         flags: 'i'
     },
     email: {
-        source: '\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*',
+        source: /[\w'.%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4}/.source,
         flags: ''
     },
     postcode: { //邮编
@@ -19,8 +19,12 @@ export default {
         source: '^\\s*|\\s*$',
         flags: 'g'
     },
-    singleChar: { //半角字符
-        source: '\u0020-\u007f|\uff61-\uff9f',
+    singleChar: { //半角字符,单字节字符
+        source: '[\u0020-\u007f\uff61-\uff9f]',
+        flags: 'g'
+    },
+    doubleChar:{ //双字节字符
+        source: '[^\u0020-\u007f\uff61-\uff9f\\n]',
         flags: 'g'
     },
     ie: {
@@ -32,7 +36,7 @@ export default {
         flags: ''
     },
     safari: {
-        source: 'Safari\\/(\\d+)',
+        source: /Version\/([\d.]+) Safari\/\d+/.source,
         flags: ''
     },
     firefox: {
@@ -62,7 +66,40 @@ export default {
     sp3:{   //字母开头且只能是英文数字下划线,6~18位
         source:'^[a-zA-Z]\\w{5,17}$',
         flags:''
+    },
+    positiveInt:{ //正整数
+        source:'^\\d+$',
+        flags:''
+    },
+    negativeInt:{//负整数
+        source:'^-\\d+$',
+        flags:''
+    },
+    int:{ //整数
+        source:'^-\\d+$',
+        flags:''
+    },
+    positiveNum:{ //正数
+        source:'^\\d*\\.?\\d+$',
+        flags:''
+    },
+    negativeNum:{ //负数
+        source:'^-\\d*\\.?\\d+$',
+        flags:''
+    },
+    num:{ //数字 Positive Number or Negative Number
+        source:'^-?\\d*\\.?\\d+$',
+        flags:''
+    },
+    ipv4:{
+        source:'^(\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.(\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5]){3}$',
+        flags:''
     }
 
 
 }
+
+//url: 摘录自: http://urlregex.com/
+//positiveInt/negativeInt/int/positiveNum/negativeNum/num/ipv4 摘录自: https://stackoverflow.com/questions/1449817/what-are-some-of-the-most-useful-regular-expressions-for-programmers
+
+

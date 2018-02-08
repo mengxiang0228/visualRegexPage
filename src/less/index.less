@@ -322,12 +322,13 @@ nav {
   }
 }
 
-.syntax {
+.fieldset{
   border: 1px solid @borderColor;
   border-radius: 5px;
-  padding: 10px 0;
+  padding: 10px 20px;
   position: relative;
-  .clearFix();
+  line-height: 1.5em;
+  margin-bottom: 20px;
 
   h2 {
     color: #999;
@@ -343,6 +344,15 @@ nav {
     top: 0;
     transform: translate(5px, -6px) scale(0.75);
   }
+
+}
+
+.syntax {
+
+  .fieldset;
+  padding:20px 0;
+
+  .clearFix();
 
   .syntaxInner {
     position: relative;
@@ -390,6 +400,16 @@ nav {
   }
 
 }
+.note{
+  .fieldset;
+  color: #999;
+  font-size: 12px;
+  a{
+    text-decoration: underline;
+  }
+}
+
+
 
 body.showAside {
 
