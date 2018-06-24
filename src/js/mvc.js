@@ -1,4 +1,5 @@
-import $ from './dom'
+// import $ from './dom'
+import $ from 'wwl-dom'
 
 
 var $body = $('body');

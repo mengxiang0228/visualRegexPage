@@ -1,0 +1,111 @@
+@import "./util.less";
+
+.topBtn {
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  //width: 0;
+  height: @navHeight;
+  z-index: @topBtnZindex;
+
+  .asideBtn {
+
+    @iconWidth: 15px;
+
+    display: block;
+    line-height: @navHeight;
+    transition: color .3s ease-out;
+    left: 15px;
+    top: 0;
+    padding-left: @iconWidth + 5px;
+    position: relative;
+
+    .asideBtnIcon {
+      display: block;
+      position: absolute;
+      height: 1em;
+      width: @iconWidth;
+      vertical-align: middle;
+      left: 0;
+      top: 50%;
+      margin-top: -0.5em;
+
+      .iconItem {
+        display: block;
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        background-color: #9EABB3;
+        left: 0;
+        transform-origin: center center;
+        transition: transform .5s, background-color .5s, opacity .5s;
+      }
+      .iconBarTop {
+        top: 0;
+        opacity: 1;
+        transition-delay: 0.2s;
+        transform: translateY(0);
+      }
+      .iconBarMid {
+        top: 50%;
+        margin-top: -1px;
+        //transform: scale(1) rotate(0);
+        transition-delay: 0s;
+      }
+      .iconBarBot {
+        bottom: 0;
+        opacity: 1;
+        transition-delay: 0.2s;
+        transform: translateY(0);
+      }
+    }
+
+    .asideBtnTxt {
+      position: relative;
+      display: inline-block;
+      opacity: 0;
+      transform: translate3d(-50%, 0, 0);
+      transition: transform .5s,opacity .2s;
+    }
+  }
+}
+
+body.showAside {
+
+  .topBtn {
+    .asideBtnIcon {
+
+      .iconItem {
+        background-color: @green1;
+      }
+
+      .iconBarTop {
+        opacity: 0;
+        transform: translateY(200%);
+        transition-delay: 0s;
+      }
+      .iconBarBot {
+        opacity: 0;
+        transform: translateY(-200%);
+        transition-delay: 0s;
+      }
+
+      .iconBarMid:nth-child(2) {
+        transform: scale(1.1) rotate(45deg);
+        transition-delay: 0.2s;
+      }
+      .iconBarMid:nth-child(3) {
+        transform: scale(1.1) rotate(-45deg);
+        transition-delay: 0.2s;
+      }
+
+    }
+    .asideBtnTxt {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      color: #fff;
+    }
+  }
+
+}

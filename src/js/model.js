@@ -1,4 +1,5 @@
-import $ from './dom';
+// import $ from './dom';
+import $ from 'wwl-dom';
 import Observable from './Observable';
 import utils from 'wwl-utils';
 import predefinedRegs from './predefined';
@@ -166,7 +167,7 @@ Observable.fromEvent($logInputTxt[0], 'input')
     .startWith(hashObj.match)
     .do(str => {
         $logInputHolder.text(str);
-        $logInputHolder.htmlAppend('<br/>');
+        $logInputHolder.append('<br/>');
         hashObj.match = str;
         location.hash = utils.param(hashObj);
     })

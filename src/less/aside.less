@@ -1,0 +1,71 @@
+@import "./util.less";
+
+.pageAside {
+
+  position: fixed;
+  width: @asideWidth;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: @green2;
+  overflow: auto;
+  overflow-x: visible;
+  padding-top: @navHeight+10px;
+  color: #fff;
+  transform: translate3d(-100%, 0, 0);
+  transition: transform .2s ease-out;
+  z-index: @asideZindex;
+
+  ul {
+
+    li {
+      padding-left: 15px;
+      border-left: 3px solid transparent;
+      line-height: 2em;
+
+      span {
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+      }
+
+      &:hover {
+        background-color: @green3;
+        border-color: @green;
+      }
+    }
+  }
+
+}
+
+.pageAsideCover {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  opacity: 0.3;
+  z-index: @asideZindex - 1;
+  left: 0;
+  top: 0;
+}
+
+@media screen and (max-width: @mobileWidth) {
+
+  .pageAside {
+    width: 85%;
+    border-top: @navHeight solid transparent;
+    padding-top: 0;
+  }
+
+  body.showAside .pageAsideCover {
+    display: block;
+  }
+
+}
+
+body.showAside .pageAside {
+  transform: translate3d(0, 0, 0);
+}
+
+

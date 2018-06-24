@@ -22,7 +22,7 @@
 
     <script>
         var _hmt = _hmt || [];
-        (function() {
+        (function () {
             var hm = document.createElement("script");
             hm.src = "https://hm.baidu.com/hm.js?49992610cb4f5184c680641afcb2c43e";
             var s = document.getElementsByTagName("script")[0];
@@ -34,15 +34,9 @@
 <body>
 
 <nav>
-    <h1>
-        正则可视化
-        <small>by <a href="/" target="_blank"><abbr title="WangWeiLin">WangWL</abbr></a></small>
-    </h1>
-
     <span class="rightLink">
         <a href="https://gitee.com/w-wl/visualRegexPage/issues">Issues</a>
     </span>
-
 </nav>
 
 <div class="topBtn">
@@ -53,9 +47,10 @@
             <span class="iconItem iconBarMid"></span>
             <span class="iconItem iconBarBot"></span>
         </span>
-        常用正则
+        <span class="asideBtnTxt">常用正则</span>
     </button>
 </div>
+
 
 <aside class="pageAside" id="pageAside">
     <ul>
@@ -75,7 +70,7 @@
         <li><span data-reg="wechat">userAgent检测微信</span></li>
         <li><span data-reg="sp1">m~n个数字</span></li>
         <li><span data-reg="sp2">只能是英文、数字、下划线</span></li>
-        <li><span data-reg="sp3">字母开头且只能是英文数字下划线,6~18位</span></li>
+        <li><span data-reg="sp3">字母开头且只能是英文数字下划线</span></li>
         <li><span data-reg="int">整数</span></li>
         <li><span data-reg="positiveInt">正整数</span></li>
         <li><span data-reg="negativeInt">负整数</span></li>
@@ -86,6 +81,7 @@
     </ul>
 
 </aside>
+<div class="pageAsideCover"></div>
 
 <main class="pageMain">
 
@@ -112,6 +108,8 @@
             <input type="checkbox" id="regexFlag_y" value="y"><label for="regexFlag_y">y</label>
         </span>
         <span class="formTitle">请选择修饰符</span>
+
+        <a class="regexLink" href="http://wangwl.net/static/pages/jsregexp.html" title="点击查看修饰符详情">?</a>
     </div>
 
 
@@ -129,6 +127,7 @@
         <p>regex.exec( str );</p>
         <pre class="logOutput" id="logOutput"></pre>
     </div>
+
 
     <div class="syntax">
         <h2>支持语法</h2>
@@ -180,11 +179,15 @@
 
     <div class="note">
         <h2>常用正则摘录链接</h2>
-        <p><a href="http://urlregex.com/">URL 摘录链接</a> </p>
-        <p><a href="https://www.leveluplunch.com/java/examples/common-regular-expressions/#email-address-regex">Email 摘录链接</a> </p>
-        <p><a href="https://stackoverflow.com/questions/1449817/what-are-some-of-the-most-useful-regular-expressions-for-programmers">整数/正整数/负整数/数字/正数/负数/IPv4 摘录链接</a> </p>
+        <p><a href="http://urlregex.com/">URL 摘录链接</a></p>
+        <p><a href="https://www.leveluplunch.com/java/examples/common-regular-expressions/#email-address-regex">Email
+            摘录链接</a></p>
+        <p>
+            <a href="https://stackoverflow.com/questions/1449817/what-are-some-of-the-most-useful-regular-expressions-for-programmers">整数/正整数/负整数/数字/正数/负数/IPv4
+                摘录链接</a></p>
         <p>身份证摘录链接忘记备注了</p>
-        <p>其余常用正则，均为<a href="/"><abbr title="WangWeiLin">个人</abbr></a>总结，如有错误烦请到<a href="https://gitee.com/w-wl/visualRegexPage/issues">issues</a>中帮忙指正。</p>
+        <p>其余常用正则，均为<a href="/"><abbr title="WangWeiLin">个人</abbr></a>总结，如有错误烦请到<a
+                href="https://gitee.com/w-wl/visualRegexPage/issues">issues</a>中帮忙指正。</p>
     </div>
 
 </main>

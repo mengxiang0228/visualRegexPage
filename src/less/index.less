@@ -1,175 +1,5 @@
 @import "./util.less";
 
-@topBtnZindex: 10;
-@asideZindex: 8;
-@navZindex: 6;
-
-@asideWidth: 250px;
-
-
-
-nav {
-  height: @navHeight;
-  border-bottom: 1px solid @borderColor;
-  z-index: @navZindex;
-  background-color: #fff;
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-
-  h1 {
-
-    position: absolute;
-    transform: translate3d(105px, 0, 0);
-    top: 0;
-    line-height: @navHeight;
-    transition: transform .3s ease-out;
-
-    small {
-      font-size: 12px;
-      display: inline-block;
-      transform: scale(0.8);
-      transform-origin: left center;
-    }
-
-  }
-
-  .rightLink{
-    position: absolute;
-    right:15px;
-    top:0;
-    line-height: @navHeight;
-  }
-
-}
-
-
-
-.topBtn {
-
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: @navHeight;
-  z-index: 10;
-
-
-
-  .topBtnCommon() {
-    display: block;
-    position: fixed;
-    line-height: @navHeight;
-    z-index: @topBtnZindex;
-    transition: color .3s ease-out;
-  }
-
-  .asideBtn {
-
-    @iconWidth: 15px;
-
-    .topBtnCommon();
-    left: 15px;
-    top: 0;
-    padding-left: @iconWidth + 5px;
-
-    .asideBtnIcon {
-      display: block;
-      position: absolute;
-      height: 1em;
-      width: @iconWidth;
-      vertical-align: middle;
-      left: 0;
-      top: 50%;
-      margin-top: -0.5em;
-
-      .iconItem {
-        display: block;
-        position: absolute;
-        height: 2px;
-        width: 100%;
-        background-color: #9EABB3;
-        left: 0;
-        transform-origin: center center;
-        transition: transform .5s, background-color .5s;
-      }
-      .iconBarTop {
-        top: 0;
-        opacity: 1;
-      }
-      .iconBarMid {
-        top: 50%;
-        margin-top: -1px;
-      }
-      .iconBarBot {
-        bottom: 0;
-        opacity: 1;
-      }
-    }
-
-  }
-}
-
-.iconBarClose() {
-  .iconBarTop {
-    //transform: scale(0);
-    opacity: 0;
-    transform: translateY(200%);
-  }
-
-  .iconBarMid:nth-child(2) {
-    transform: scale(1.1) rotate(45deg);
-  }
-  .iconBarMid:nth-child(3) {
-    transform: scale(1.1) rotate(-45deg);
-  }
-  .iconBarBot {
-    //transform: scale(0);
-    opacity: 0;
-    transform: translateY(-200%);
-  }
-}
-
-.pageAside {
-
-  position: fixed;
-  width: @asideWidth;
-  height: 100%;
-  left: 0;
-  top: 0;
-  background-color: @darkBlueOpacity;
-  overflow: auto;
-  padding-top: @navHeight+10px;
-  color: #fff;
-  transform: translate3d(-100%, 0, 0);
-  transition: transform .3s ease-out;
-  z-index: @asideZindex;
-
-  ul {
-
-    li {
-      padding-left: 15px;
-      border-left: 3px solid transparent;
-      line-height: 2em;
-
-      span {
-        display: inline-block;
-        position: relative;
-        cursor: pointer;
-      }
-
-      &:hover {
-        background-color: @darkBlue;
-        border-color: @green;
-      }
-    }
-  }
-
-}
-
-@hoverColor: #108ee9;
-
 .pageMain {
   margin-top: @navHeight;
   margin-left: 0;
@@ -179,14 +9,25 @@ nav {
   transition: margin-left .3s ease-out;
 }
 
+body.showAside {
+  .pageMain {
+    margin-left: @asideWidth;
+
+    @media screen and (max-width: @mobileWidth) {
+      margin-left: 0;
+    }
+
+  }
+}
+
 .formCtl {
   position: relative;
   width: 100%;
   height: 46px;
   line-height: 44px;
+  margin-bottom: 30px;
   border: 1px solid @borderColor;
   border-radius: 5px;
-  margin-bottom: 20px;
 
   transition: border-color .3s, box-shadow .3s;
 
@@ -218,19 +59,18 @@ nav {
   }
 
   .formTitle {
-    color: #999;
     position: absolute;
-
-    background-color: #fff;
-    transition: transform .3s ease-out;
+    left: 0;
+    top: 0;
+    transform: translate(15px, 10px);
 
     font-size: 16px;
     height: 16px;
     line-height: 16px;
 
-    left: 0;
-    top: 0;
-    transform: translate(15px, 10px);
+    color: #999;
+    background-color: #fff;
+    transition: transform .3s ease-out;
   }
 
   .formInput {
@@ -322,7 +162,7 @@ nav {
   }
 }
 
-.fieldset{
+.fieldset {
   border: 1px solid @borderColor;
   border-radius: 5px;
   padding: 10px 20px;
@@ -350,7 +190,7 @@ nav {
 .syntax {
 
   .fieldset;
-  padding:20px 0;
+  padding: 20px 0;
 
   .clearFix();
 
@@ -363,6 +203,10 @@ nav {
     overflow: hidden;
     width: 50%;
     float: left;
+
+    @media screen and (max-width: @mobileWidth) {
+      width: 100%;
+    }
 
     li {
 
@@ -379,7 +223,7 @@ nav {
       flex-flow: nowrap;
 
       &:hover {
-        border-color: @green;
+        border-color: @green1;
         transform: scale(1.1);
       }
 
@@ -400,79 +244,27 @@ nav {
   }
 
 }
-.note{
+
+.note {
   .fieldset;
   color: #999;
   font-size: 12px;
-  a{
+  a {
     text-decoration: underline;
   }
 }
 
-
-
-body.showAside {
-
-  nav {
-    h1 {
-      transform: translate3d(@asideWidth+15, 0, 0);
-    }
-  }
-
-  .topBtn {
-    .asideBtn {
-      color: #fff;
-      .asideBtnIcon {
-        .iconBarClose();
-        .iconItem {
-          background-color: @green;
-        }
-      }
-
-    }
-    animation: topBtn .3s ease-out;
-    animation-fill-mode: forwards;
-    animation-delay: .3s;
-  }
-
-  .pageMain {
-    margin-left: @asideWidth;
-  }
-  .pageAside {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes fadeInToRight {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 0, 0)
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(-30px, 0, 0)
-  }
-}
-
-@keyframes topBtn {
-  from {
-    width: 0;
-    background-color: transparent;
-  }
-  to {
-    width: @asideWidth - 15;
-    background-color: @darkBlueOpacity;
-  }
-}
-
-
-@keyframes topBtnHide {
-  from {
-    width: @asideWidth - 15;
-    background-color: @darkBlueOpacity;
-  }
-  to {
-    width: 0;
-    background-color: transparent;
-  }
+.regexLink{
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  background-color: #ddd;
+  line-height: 18px;
+  text-align: center;
+  border-radius: 50%;
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
 }
