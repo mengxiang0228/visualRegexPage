@@ -62,7 +62,7 @@ body.showAside {
     position: absolute;
     left: 0;
     top: 0;
-    transform: translate(15px, 10px);
+    transform: translate(15px, 14px);
 
     font-size: 16px;
     height: 16px;
@@ -254,7 +254,7 @@ body.showAside {
   }
 }
 
-.regexLink{
+a.regexLink{
   width: 18px;
   height: 18px;
   display: inline-block;
@@ -267,4 +267,9 @@ body.showAside {
   top: 50%;
   transform: translateY(-50%);
   color: #666;
+
+  @media screen and (max-width: @mobileWidth) {
+    right: 5px;
+  }
+
 }

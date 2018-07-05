@@ -2,47 +2,71 @@ import '../less/index.js';
 
 import utils from 'wwl-utils';
 
-import {regexChanged, refreshFigure} from './model'
+import $ from 'wwl-dom'
 
-import visual from 'visual-regex';
+import regexChange from './regexChange';
 
-import $ from './dom'
-
-import mvc from './mvc'
-
+var $body = $(document.body);
 
 if (utils.isIE()) {
-    alert('恐怕不能兼容IE浏览器，最好切换为极速模式或chrome浏览器。');
+    alert('恐怕不太能兼容IE浏览器，最好切换为极速模式或chrome浏览器。');
 }
 
 var isPc = window.innerWidth >= 1024;
+var isShowAside = false;
+
+
+//region fix 滚动穿透
+var fixedPloyfill = function () {
+    if (isPc) return;
+    $body.style({
+        overflow: 'hidden',
+    });
+};
+var fixedPloyfillRemove = function () {
+    if (isPc) return;
+    $body.style({
+        overflow: 'auto'
+    });
+};
+//endregion
+
+
+var action = {
+    showAside() {
+        if (isShowAside) return;
+        $body.addClass('showAside');
+        isShowAside = true;
+        fixedPloyfill();
+    },
+    hideAside() {
+        if (!isShowAside) return;
+        $body.removeClass('showAside');
+        isShowAside = false;
+        fixedPloyfillRemove();
+    },
+    toggleAside() {
+        isShowAside ? action.hideAside() : action.showAside();
+    }
+};
 
 
 $('#toggleAside').on('click', function (e) {
-    mvc.toggleAside();
+    action.toggleAside();
 });
 
-if(isPc){
-    mvc.showAside();
+$('#pageAsideCover').on('click', function (e) {
+    action.hideAside();
+});
+if (isPc) {
+    action.showAside();
 }
-else{
-    $('#pageAside').onDelegate('click', 'span', e => {
-        mvc.toggleAside();
+else {
+    $('#pageAside').onDelegate('click', 'li', e => {
+        action.toggleAside();
     });
 }
 
-
-regexChanged
-    .subscribe(reg => {
-        var canvas;
-        if (reg && reg.expando[0]) {
-            console.log(reg, reg.flags);
-            canvas = visual(reg);
-        }
-
-        refreshFigure(canvas);
-
-    });
 
 
 

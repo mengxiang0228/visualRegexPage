@@ -5,6 +5,7 @@ const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
 
+var isDev = false;
 
 module.exports = {
 
@@ -29,7 +30,7 @@ module.exports = {
                 test: /\.less$/,
                 use: ExtractTextWebpackPlugin.extract({
                     use: [
-                        {loader: 'css-loader', options: {minimize: true}},
+                        {loader: 'css-loader', options: {minimize: !isDev}},
                         'less-loader'
                     ],
                     // fallback: ['style-loader'] //不清楚fallback的作用，先注掉
@@ -79,23 +80,23 @@ module.exports = {
             filename: './index.html',
             template: './src/index.html',
             minify: {
-                collapseBooleanAttributes:true,
-                collapseWhitespace:true,
-                decodeEntities:true,
-                processConditionalComments:true,
-                removeAttributeQuotes:true,
-                removeComments:true,
-                removeOptionalTags:true,
-                removeRedundantAttributes:true,
-                removeScriptTypeAttributes:true,
-                removeStyleLinkTypeAttributes:true,
-                trimCustomFragments:true
+                collapseBooleanAttributes: true,
+                collapseWhitespace: true,
+                decodeEntities: true,
+                processConditionalComments: true,
+                removeAttributeQuotes: true,
+                removeComments: true,
+                removeOptionalTags: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                trimCustomFragments: true
             }
         }),
         new ExtractTextWebpackPlugin({
             filename: 'css/[name].[md5:contenthash:32].css'
         }),
-        new UglifyJSPlugin({
+        isDev ? null : new UglifyJSPlugin({
             uglifyOptions: {
                 output: {
                     comments: false,
@@ -112,6 +113,6 @@ module.exports = {
             }
         }),
         new webpack.BannerPlugin('https://gitee.com/w-wl/')
-    ]
+    ].filter(p => p)
 
 };
