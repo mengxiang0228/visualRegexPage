@@ -13,8 +13,39 @@ hljs.registerLanguage('json', require('highlight.js/lib/languages/json'));
 
 
 var $figure = $('#figure');
+
+//regex log:
+var $logInputCtl = $('#logInput');
+var $logInputHolder = $logInputCtl.find('span');
+var $logInputTextarea = $logInputCtl.find('textarea');
+
+
+var $logRegSource = $('#logRegSource');
+var $logRegFlags = $('#logRegFlags');
+
+var $logOutput = $('#logOutput');
+
+if (hashObj.match) {
+    $logInputTextarea.val(hashObj.match);
+}
+
+var matchValueObservable = Observable.fromEvent($logInputTextarea[0], 'input')
+    .map(e => e.target.value)
+    .startWith(hashObj.match)
+    .do(str => {
+        $logInputHolder.text(str);
+        $logInputHolder.append('<br/>');
+        hashObj.match = str;
+        // location.hash = utils.param(hashObj);
+        // console.log('#' + utils.param(hashObj));
+        history.replaceState(null, document.title, '#' + utils.param(hashObj));
+    })
+    .debounceTime(300)
+    .distinctUntilChanged();
+
+
 regexChanged
-    .subscribe(reg => {
+    .do(reg => {
         console.log('refresh canvas', reg);
         var canvas;
         if (reg && reg.expando[0]) {
@@ -32,40 +63,9 @@ regexChanged
             $figure.html('Render error!');
         }
 
-    });
-
-
-//regex log:
-var $logInputCtl = $('#logInput');
-var $logInputHolder = $logInputCtl.find('span');
-var $logInputTextarea = $logInputCtl.find('textarea');
-
-
-var $logRegSource = $('#logRegSource');
-var $logRegFlags = $('#logRegFlags');
-
-var $logOutput = $('#logOutput');
-
-if (hashObj.match) {
-    $logInputTextarea.val(hashObj.match);
-}
-
-
-Observable.fromEvent($logInputTextarea[0], 'input')
-    .map(e => e.target.value)
-    .startWith(hashObj.match)
-    .do(str => {
-        $logInputHolder.text(str);
-        $logInputHolder.append('<br/>');
-        hashObj.match = str;
-        // location.hash = utils.param(hashObj);
-        // console.log('#' + utils.param(hashObj));
-        history.replaceState(null, document.title, '#' + utils.param(hashObj));
     })
-    .debounceTime(300)
-    .distinctUntilChanged()
-    .combineLatest(regexChanged)
-    .subscribe(([str, reg]) => {
+    .combineLatest(matchValueObservable)
+    .subscribe(([reg, str]) => {
 
         var result = 'Null';
 
@@ -91,5 +91,4 @@ Observable.fromEvent($logInputTextarea[0], 'input')
         hljs.highlightBlock($logOutput[0]);
 
     });
-
 

@@ -19,24 +19,17 @@ hashObj.match === undefined && (hashObj.match = '');
 
 console.log('hash', hashObj);
 
-var blurSourceInput = function () {
-    if ($sourceInput.val().trim() !== '') {
-        $sourceCtl.addClass('miniTitle');
-    }
-    else {
-        $sourceCtl.removeClass('miniTitle');
-    }
-}
-var focusSourceInput = function () {
-    $sourceCtl.addClass('miniTitle');
-};
-
 Observable.fromEvent($sourceInput[0], 'focus').map(e => true)
     .merge(Observable.fromEvent($sourceInput[0], 'blur').map(e => false))
     // .debounceTime(200)  //如果添加debounce，则predefinedChangedObservable首次focus不会响应
     .subscribe((isFocus) => {
         console.log('regexInput focus/blur callback');
-        isFocus ? focusSourceInput() : blurSourceInput();
+        if ($sourceInput.val().trim() !== '' || isFocus) {
+            $sourceCtl.addClass('miniTitle');
+        }
+        else {
+            $sourceCtl.removeClass('miniTitle');
+        }
     });
 
 $sourceCtl.on('click', e => {
@@ -49,42 +42,43 @@ $sourceCtl.on('click', e => {
 
 
 var predefinedChangedObservable = Observable
-    .create(observer => {
-        $('#pageAside').onDelegate('click', 'li', function (e) {
-            var key = $(this).find('span').dataset('reg');
-            var reg = predefinedRegs[key] || {};
-            observer.next({
-                source: reg.source || '',
-                flags: reg.flags || ''
-            });
-        });
+    .fromEvent($('#pageAside')[0], 'click', 'li').map(e => {
+        console.log('#pageAside click', e.target);
+        var tar = e.target;
+        if (tar.tagName !== 'SPAN') {
+            tar = $(e.target).find('span');
+        }
+
+        var key = tar.dataset.reg;
+        var reg = predefinedRegs[key] || {};
+        return {
+            source: reg.source || '',
+            flags: reg.flags || ''
+        }
     })
-    .startWith(hashObj)
-    .do(({source, flags}) => {
+    .startWith(hashObj);
 
-        console.log('predefined changed', source, flags);
-        $flagsInputs.each(node => {
-            node.checked = flags.includes(node.value)
-            // node.dispatchEvent(new Event('change'));
-        });
-
-        console.log('refresh', $sourceInput.val());
-
-        $sourceInput.val(source || '');
-        // $sourceInput[0].dispatchEvent(new Event('focus'));
-        // $sourceInput.trigger('focus');
-        focusSourceInput();
+var predefinedSourceObservable = predefinedChangedObservable.map(({source}) => source).do((source) => {
+    console.log('predefined source change');
+    $sourceInput.val(source || '');
+    if (source.trim() !== '') {
+        //当前页面未获得焦点的时候，focus回调不会触发。
+        $sourceCtl.addClass('miniTitle');
+        $sourceInput.trigger('focus');
+    }
+});
+var predefinedFlagsObservable = predefinedChangedObservable.map(({flags}) => flags).do((flags) => {
+    console.log('predefined flags change');
+    $flagsInputs.each(node => {
+        node.checked = flags.includes(node.value)
     });
-
-var predefinedSourceObservable = predefinedChangedObservable.map(({source}) => source);
-var predefinedFlagsObservable = predefinedChangedObservable.map(({flags}) => flags);
+});
 
 
 var flagsObservable = Observable
-    .create(observer => {
-        $flagsCtl.onDelegate('change', 'input', (e) => {
-            observer.next($flagsInputs.map(node => node.checked ? node.value : '').join(''));
-        })
+    .fromEvent($flagsCtl[0], 'change', 'input').map((e) => {
+        console.log('flag input change', e.target);
+        return $flagsInputs.map(node => node.checked ? node.value : '').join('')
     })
     .merge(predefinedFlagsObservable)
     .do(val => console.log('flag changed,', val));
@@ -93,6 +87,9 @@ var flagsObservable = Observable
 var sourceObservable = Observable
     .fromEvent($sourceInput[0], 'input')
     .map(e => e.target.value)
+    .do(val => {
+        console.log('source input', val);
+    })
     .debounceTime(300)
     .merge(predefinedSourceObservable);
 
