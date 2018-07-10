@@ -112,7 +112,7 @@ module.exports = {
                 warnings: true
             }
         }),
-        new webpack.BannerPlugin('https://gitee.com/w-wl/')
+        new webpack.BannerPlugin('http://wangwl.net')
     ].filter(p => p)
 
 };

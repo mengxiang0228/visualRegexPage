@@ -58,7 +58,9 @@ Observable.fromEvent($logInputTextarea[0], 'input')
         $logInputHolder.text(str);
         $logInputHolder.append('<br/>');
         hashObj.match = str;
-        location.hash = utils.param(hashObj);
+        // location.hash = utils.param(hashObj);
+        // console.log('#' + utils.param(hashObj));
+        history.replaceState(null, document.title, '#' + utils.param(hashObj));
     })
     .debounceTime(300)
     .distinctUntilChanged()

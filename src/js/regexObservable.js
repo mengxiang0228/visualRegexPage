@@ -19,17 +19,24 @@ hashObj.match === undefined && (hashObj.match = '');
 
 console.log('hash', hashObj);
 
+var blurSourceInput = function () {
+    if ($sourceInput.val().trim() !== '') {
+        $sourceCtl.addClass('miniTitle');
+    }
+    else {
+        $sourceCtl.removeClass('miniTitle');
+    }
+}
+var focusSourceInput = function () {
+    $sourceCtl.addClass('miniTitle');
+};
+
 Observable.fromEvent($sourceInput[0], 'focus').map(e => true)
     .merge(Observable.fromEvent($sourceInput[0], 'blur').map(e => false))
     // .debounceTime(200)  //如果添加debounce，则predefinedChangedObservable首次focus不会响应
     .subscribe((isFocus) => {
         console.log('regexInput focus/blur callback');
-        if ($sourceInput.val().trim() !== '' || isFocus) {
-            $sourceCtl.addClass('miniTitle');
-        }
-        else {
-            $sourceCtl.removeClass('miniTitle');
-        }
+        isFocus ? focusSourceInput() : blurSourceInput();
     });
 
 $sourceCtl.on('click', e => {
@@ -39,7 +46,6 @@ $sourceCtl.on('click', e => {
     $sourceInput[0].focus();
 
 });
-
 
 
 var predefinedChangedObservable = Observable
@@ -66,7 +72,8 @@ var predefinedChangedObservable = Observable
 
         $sourceInput.val(source || '');
         // $sourceInput[0].dispatchEvent(new Event('focus'));
-        $sourceInput.trigger('focus');
+        // $sourceInput.trigger('focus');
+        focusSourceInput();
     });
 
 var predefinedSourceObservable = predefinedChangedObservable.map(({source}) => source);
@@ -103,7 +110,8 @@ var regexChangedObservable = sourceObservable
 
         console.log('regex changed', source, flags, '---');
 
-        location.hash = utils.param(hashObj);
+        // location.hash = utils.param(hashObj);
+        history.replaceState(null, document.title, '#' + utils.param(hashObj));
     })
     .map(({source, flags}) => {
 
