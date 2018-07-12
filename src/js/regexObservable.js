@@ -46,7 +46,7 @@ var predefinedChangedObservable = Observable
         console.log('#pageAside click', e.target);
         var tar = e.target;
         if (tar.tagName !== 'SPAN') {
-            tar = $(e.target).find('span');
+            tar = $(e.target).find('span')[0];
         }
 
         var key = tar.dataset.reg;
