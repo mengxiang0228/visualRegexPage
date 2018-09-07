@@ -115,6 +115,61 @@ body.showAside {
 
   p {
     white-space: nowrap;
+    line-height: 1.5em;
+  }
+
+  .logSelectWrap{
+    position: relative;
+    display: inline-block;
+    border: 1px solid @borderColor;
+    cursor: pointer;
+    &:after{
+      content: '';
+      display: inline-block;
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border: 1px solid @borderColor;
+      border-bottom: none;
+      border-left: none;
+      top: 5px;
+      right: 5px;
+      transform: translate(0,0) rotate(135deg);
+      transition: transform .6s,border-color .6s;
+    }
+
+    &:hover{
+      //border-color: @green1;
+      &:after{
+        border-color: @green1;
+        transform: translate(0,2px) rotate(135deg);
+      }
+    }
+  }
+  .logSelect{
+    background-color: transparent;
+    border: none;
+    line-height: 1.5em;
+    height: 1.5em;
+    box-sizing: content-box;
+    .appearance(none);
+    padding-right: 30px;
+    padding-left: 5px;
+    cursor: pointer;
+  }
+
+  /* ie9 hack */
+  @hack:~"/9";
+  @media screen and (min-width:0@hack) {
+    .logSelect{
+      border:1px solid @borderColor@hack;
+    }
+    .logSelectWrap{
+      border: none@hack;
+      &:after{
+        display: none@hack;
+      }
+    }
   }
 
   .logInput {
@@ -160,6 +215,7 @@ body.showAside {
     border-radius: 5px;
     min-height: 2em;
     padding: 5px;
+    margin-top: 0.5em;
   }
 }
 

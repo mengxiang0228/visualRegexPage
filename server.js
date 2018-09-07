@@ -53,7 +53,7 @@ compiler.plugin('compilation', function (compilation) {
 
 app.use(devMiddleware);
 
-app.use(hotMiddleware)
+app.use(hotMiddleware);
 
 var port=3000;
 

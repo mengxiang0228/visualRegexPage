@@ -126,7 +126,18 @@
             </span>"; //输入要匹配的字符串
         </p>
         <p>var regex = new RegExp("<span id="logRegSource"></span>","<span id="logRegFlags"></span>");</p>
-        <p>regex.exec( str );</p>
+        <p>
+            <span class="logSelectWrap" >
+                <select class="logSelect" id="logSelect">
+                    <option value="exec">regex.exec( str )</option>
+                    <option value="match">str.match( regex )</option>
+                    <option value="search">str.search( regex )</option>
+                    <option value="replace">str.replace( regex )</option>
+                    <option value="split">str.split( regex )</option>
+                </select>
+            </span>
+
+        </p>
         <pre class="logOutput" id="logOutput"></pre>
     </div>
 

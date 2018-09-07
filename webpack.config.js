@@ -1,14 +1,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 var isDev = false;
 
 module.exports = {
-
+    mode: isDev?'none':'production',
     entry: {
         app: './src/js/index.js',
     },
@@ -17,32 +18,43 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         publicPath: './'
     },
+    optimization: {
+        minimizer: [
+            isDev ? null : new UglifyJSPlugin({
+                uglifyOptions: {
+                    output: {
+                        comments: false,
+                        beautify: false,
+                        ascii_only: true
+                    },
+                    compress: {
+                        drop_console: true,
+                        drop_debugger: true,
+                        properties: true,
+                        evaluate: true
+                    },
+                    warnings: true
+                }
+            }),
+            isDev ? null : new OptimizeCSSAssetsPlugin({})
+        ].filter(p => p)
+    },
     module: {
         rules: [
-            // {
-            // test: /\.css$/,
-            // use: [
-            //     {loader: 'style-loader'}, //creates style nodes from JS strings
-            //     {loader: 'css-loader'},  //translates CSS into CommonJS
-            // ],
-            // },
             {
                 test: /\.less$/,
-                use: ExtractTextWebpackPlugin.extract({
-                    use: [
-                        {loader: 'css-loader', options: {minimize: !isDev}},
-                        'less-loader'
-                    ],
-                    // fallback: ['style-loader'] //不清楚fallback的作用，先注掉
-                })
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {loader: 'css-loader', options: {minimize: !isDev}},
+                    'less-loader'
+                ],
             },
             {
                 test: /\.css$/,
-                use: ExtractTextWebpackPlugin.extract({
-                    use: [
-                        {loader: 'css-loader', options: {minimize: true}}
-                    ]
-                })
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {loader: 'css-loader', options: {minimize: true}}
+                ]
             },
             //npm install --save-dev babel-loader babel-core babel-preset-env
             //npm install --save-dev babel-plugin-transform-runtime
@@ -76,6 +88,9 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(['dist']),
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].[hash].css'
+        }),
         new HtmlWebpackPlugin({
             filename: './index.html',
             template: './src/index.html',
@@ -91,25 +106,6 @@ module.exports = {
                 removeScriptTypeAttributes: true,
                 removeStyleLinkTypeAttributes: true,
                 trimCustomFragments: true
-            }
-        }),
-        new ExtractTextWebpackPlugin({
-            filename: 'css/[name].[md5:contenthash:32].css'
-        }),
-        isDev ? null : new UglifyJSPlugin({
-            uglifyOptions: {
-                output: {
-                    comments: false,
-                    beautify: false,
-                    ascii_only: true
-                },
-                compress: {
-                    drop_console: true,
-                    drop_debugger: true,
-                    properties: true,
-                    evaluate: true
-                },
-                warnings: true
             }
         }),
         new webpack.BannerPlugin('http://wangwl.net')

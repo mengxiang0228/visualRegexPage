@@ -16,6 +16,7 @@ var hashObj = utils.parseParam(location.hash.replace(/^#/, ''));
 hashObj.flags === undefined && (hashObj.flags = '');
 hashObj.source === undefined && (hashObj.source = '');
 hashObj.match === undefined && (hashObj.match = '');
+hashObj.method === undefined && (hashObj.method = '')
 
 console.log('hash', hashObj);
 

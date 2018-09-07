@@ -78,6 +78,13 @@ ul, li {
   list-style: none;
 }
 
+select{
+  &:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 @htmlColor;
+  }
+}
+
 label, input[type="radio"], input[type="checkbox"] {
   cursor: pointer;
   user-select: none;

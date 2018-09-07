@@ -8,6 +8,15 @@
   }
 }
 
+.appearance(@val){
+  -webkit-appearance: @val;
+  -moz-appearance: @val;
+  appearance: @val;
+  &::-ms-expand{
+    display: none;
+  }
+}
+
 @borderColor: #d7dce8;
 @errorColor: #f46e65;
 
