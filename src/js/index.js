@@ -1,9 +1,6 @@
 import '../less/index.js';
-
-import utils from 'wwl-utils';
-
-import $ from 'wwl-dom'
-
+import $ from 'relax-dom';
+import utils from 'relax-utils';
 import regexChange from './regexChange';
 
 var $body = $(document.body);

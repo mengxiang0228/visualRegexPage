@@ -116,6 +116,7 @@ body.showAside {
   p {
     white-space: nowrap;
     line-height: 1.5em;
+    margin-bottom: 5px;
   }
 
   .logSelectWrap{
@@ -174,10 +175,9 @@ body.showAside {
 
   .logInput {
     display: inline-block;
-    min-width: 50px;
+    min-width: 100px;
     min-height: 1em;
     position: relative;
-    vertical-align: text-bottom;
 
     border: 1px solid @borderColor;
     box-sizing: content-box;
@@ -208,6 +208,21 @@ body.showAside {
       overflow: hidden;
     }
 
+  }
+
+  .logReplacementSec {
+    display: none;
+  }
+  &.isReplaceMethod .logReplacementSec {
+    display: block;
+  }
+  .logReplacementInput {
+    display: inline-block;
+    height: 1.5em;
+    line-height: 1.5em;
+    width: 100px;
+    position: relative;
+    border: 1px solid @borderColor;
   }
 
   .logOutput {
@@ -329,4 +344,12 @@ a.regexLink{
     right: 5px;
   }
 
+}
+
+.comment {
+  .fieldset;
+  .comment_root {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
 }

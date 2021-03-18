@@ -1,114 +1,67 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const {resolve} = require('path');
 const webpack = require('webpack');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 
-var isDev = false;
+const isDev = process.env.NODE_ENV !== 'production';
 
-module.exports = {
-    mode: isDev?'none':'production',
+const banner = '/*! http://wangwl.net */';
+
+let topic_id = isDev ? 'wwl375933ad96869' : '0A945EC1633225F7';
+
+let config = {
+    mode: isDev ? 'development' : 'production',
     entry: {
-        app: './src/js/index.js',
+        index: resolve(__dirname, 'src/js/index.js')
     },
+    watch: isDev,
     output: {
-        filename: 'js/[name].[hash].js',
-        path: path.resolve(__dirname, 'dist'),
-        publicPath: './'
+        clean: true,
+        filename: isDev ? '[name][contenthash].js' : '[contenthash].js',
+        path: resolve(__dirname, './dist'),
+        publicPath: "./"
     },
-    optimization: {
-        minimizer: [
-            isDev ? null : new UglifyJSPlugin({
-                uglifyOptions: {
-                    output: {
-                        comments: false,
-                        beautify: false,
-                        ascii_only: true
-                    },
-                    compress: {
-                        drop_console: true,
-                        drop_debugger: true,
-                        properties: true,
-                        evaluate: true
-                    },
-                    warnings: true
-                }
-            }),
-            isDev ? null : new OptimizeCSSAssetsPlugin({})
-        ].filter(p => p)
-    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: isDev ? '[name][contenthash].css' : '[contenthash].css'
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: resolve(__dirname, './src/index.html'),
+            templateParameters: {topic_id}
+        }),
+        new webpack.BannerPlugin({
+            banner: banner,
+            raw: true
+        })
+    ],
     module: {
         rules: [
             {
-                test: /\.less$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    {loader: 'css-loader', options: {minimize: !isDev}},
-                    'less-loader'
-                ],
+                test: /\.less$/i,
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
             },
             {
-                test: /\.css$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    {loader: 'css-loader', options: {minimize: true}}
-                ]
-            },
-            //npm install --save-dev babel-loader babel-core babel-preset-env
-            //npm install --save-dev babel-plugin-transform-runtime
-            //npm install --save babel-runtime
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            "presets": [
-                                ["env", {
-                                    targets: {"browsers": ["last 2 major versions", "ie >= 9"]},
-                                    modules: false
-                                }]
-                            ],
-                            "plugins": [
-                                ["transform-runtime", {
-                                    "helpers": true,
-                                    "polyfill": false,
-                                    "regenerator": false,
-                                    "moduleName": "babel-runtime"
-                                }]
-                            ]
-                        }
-                    }
-                ]
+                test: /\.css$/i,
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
             }
-        ]
+        ],
     },
-    plugins: [
-        new CleanWebpackPlugin(['dist']),
-        new MiniCssExtractPlugin({
-            filename: 'css/[name].[hash].css'
-        }),
-        new HtmlWebpackPlugin({
-            filename: './index.html',
-            template: './src/index.html',
-            minify: {
-                collapseBooleanAttributes: true,
-                collapseWhitespace: true,
-                decodeEntities: true,
-                processConditionalComments: true,
-                removeAttributeQuotes: true,
-                removeComments: true,
-                removeOptionalTags: true,
-                removeRedundantAttributes: true,
-                removeScriptTypeAttributes: true,
-                removeStyleLinkTypeAttributes: true,
-                trimCustomFragments: true
-            }
-        }),
-        new webpack.BannerPlugin('http://wangwl.net')
-    ].filter(p => p)
+    optimization: {
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    compress: {drop_console: true}
+                },
+                extractComments: false
+            }),
+            new CssMinimizerPlugin()
+        ]
+    }
+}
 
-};
+if (isDev) config.devtool = 'inline-source-map';
+
+module.exports = config;

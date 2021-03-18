@@ -10,10 +10,8 @@ export default {
         }
     },
     'replace': {
-        call(reg, str) {
-            return str.replace(reg, function (match) {
-                return Array(match.length).fill('*').join('');
-            })
+        call(reg, str, replacement) {
+            return str.replace(reg, replacement || '')
         }
     },
     'split': {

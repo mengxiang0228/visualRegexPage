@@ -36,7 +36,7 @@
 
 <nav>
     <span class="rightLink">
-        <a href="https://gitee.com/w-wl/visualRegexPage/issues">Issues</a>
+        <a href="https://github.com/relax-code-relax-life/visualRegexPage/issues">Issues</a>
         <a href="/" target="_self">首页</a>
     </span>
 </nav>
@@ -120,13 +120,14 @@
         <!-- 动态的在figure中添加canvas标签 -->
     </div>
 
-    <div class="log">
+    <div class="log" id="logRoot">
         <p>var str = "<span class="logInput" id="logInput">
                 <span class="logInputHolder"></span>
                 <textarea></textarea>
             </span>"; //输入要匹配的字符串
         </p>
         <p>var regex = new RegExp("<span id="logRegSource"></span>","<span id="logRegFlags"></span>");</p>
+        <p class="logReplacementSec">var replacement = "<input class="logReplacementInput" type="text" id="logReplacementInput">"</p>
         <p>
             <span class="logSelectWrap" >
                 <select class="logSelect" id="logSelect">
@@ -157,7 +158,7 @@
             <li><span class="key">\w</span><span class="desc">单词(字母，数字，下划线)</span></li>
             <li><span class="key">\W</span><span class="desc">非单词</span></li>
             <li><span class="key">\b</span><span class="desc">单词边界</span></li>
-            <li><span class="key">\b</span><span class="desc">非单词边界</span></li>
+            <li><span class="key">\B</span><span class="desc">非单词边界</span></li>
             <li><span class="key">^</span><span class="desc">开头</span></li>
             <li><span class="key">$</span><span class="desc">结尾</span></li>
             <li><span class="key">(...)</span><span class="desc">分组</span></li>
@@ -204,6 +205,14 @@
                 href="https://gitee.com/w-wl/visualRegexPage/issues">issues</a>中帮忙指正。</p>
         <p>npm package: <a href="https://www.npmjs.com/package/visual-regex">visual-regex</a></p>
     </div>
+
+    <div class="comment">
+        <h2>发表评论</h2>
+        <div class="comment_root" id="comment">
+            loading comment ...
+        </div>
+    </div>
+    <script defer="defer" src="/static/comment/index.js" data-topic-id="<%= topic_id %>" data-container-id="comment"></script>
 
 </main>
 
