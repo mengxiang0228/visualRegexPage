@@ -21,7 +21,7 @@ let config = {
         clean: true,
         filename: isDev ? '[name][contenthash].js' : '[contenthash].js',
         path: resolve(__dirname, './dist'),
-        publicPath: isDev ? "./" : './visualRegex/'
+        publicPath: "./"
     },
     plugins: [
         new MiniCssExtractPlugin({
