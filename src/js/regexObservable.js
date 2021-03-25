@@ -21,7 +21,13 @@ var $flagsInputs = $flagsCtl.find('input');
 
 
 //source=xxx&flags=muig&match=inputTxt
-var hashObj = utils.parseParam(location.hash.replace(/^#/, ''));
+let hashObj;
+try {
+    hashObj = utils.parseParam(location.hash.replace(/^#/, ''));
+} catch (e) {
+    console.log('parse param error:', e);
+    hashObj = {};
+}
 hashObj.flags === undefined && (hashObj.flags = '');
 hashObj.source === undefined && (hashObj.source = '');
 hashObj.match === undefined && (hashObj.match = '');

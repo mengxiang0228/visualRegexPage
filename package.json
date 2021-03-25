@@ -28,7 +28,7 @@
   "dependencies": {
     "highlight.js": "^9.12.0",
     "relax-dom": "^1.0.37",
-    "relax-utils": "^1.0.60",
+    "relax-utils": "^1.0.63",
     "rxjs": "^6.6.6",
     "visual-regex": "^1.0.7"
   }
