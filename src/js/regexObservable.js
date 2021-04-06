@@ -1,4 +1,3 @@
-import utils from "relax-utils";
 import $ from "relax-dom";
 import {fromEvent} from 'rxjs/internal/observable/fromEvent';
 import {merge} from 'rxjs/internal/observable/merge';
@@ -11,7 +10,7 @@ import {distinctUntilChanged} from 'rxjs/internal/operators/distinctUntilChanged
 import {publishBehavior} from 'rxjs/internal/operators/publishBehavior';
 import {refCount} from 'rxjs/internal/operators/refCount';
 import predefinedRegs from "./predefined";
-
+import { getInitHash } from './hash';
 
 var $sourceCtl = $('#regexSource');
 var $sourceInput = $sourceCtl.find('input');
@@ -21,19 +20,8 @@ var $flagsInputs = $flagsCtl.find('input');
 
 
 //source=xxx&flags=muig&match=inputTxt
-let hashObj;
-try {
-    hashObj = utils.parseParam(location.hash.replace(/^#/, ''));
-} catch (e) {
-    console.log('parse param error:', e);
-    hashObj = {};
-}
-hashObj.flags === undefined && (hashObj.flags = '');
-hashObj.source === undefined && (hashObj.source = '');
-hashObj.match === undefined && (hashObj.match = '');
-hashObj.method === undefined && (hashObj.method = '')
-hashObj.replacement === undefined && (hashObj.replacement = '*')
 
+let hashObj = getInitHash();
 console.log('hashObj:', hashObj);
 
 merge(
@@ -146,4 +134,4 @@ var regexChangedObservable = combineLatest([
     refCount()
 )
 
-export {regexChangedObservable as regexChanged, hashObj};
+export {regexChangedObservable as regexChanged};

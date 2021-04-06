@@ -1,5 +1,4 @@
 import $ from 'relax-dom';
-import utils from 'relax-utils';
 import {fromEvent} from 'rxjs/internal/observable/fromEvent';
 import {combineLatest} from 'rxjs/internal/observable/combineLatest';
 import {map} from 'rxjs/internal/operators/map';
@@ -9,7 +8,8 @@ import {debounceTime} from 'rxjs/internal/operators/debounceTime';
 import {distinctUntilChanged} from 'rxjs/internal/operators/distinctUntilChanged';
 import {first} from 'rxjs/internal/operators/first';
 
-import {regexChanged, hashObj} from './regexObservable'
+import {getInitHash,setHash} from './hash';
+import {regexChanged} from './regexObservable'
 
 import hljs from 'highlight.js/lib/highlight'
 import jsonCss from 'highlight.js/styles/default.css'
@@ -34,6 +34,7 @@ var $logRegFlags = $('#logRegFlags');
 
 var $logOutput = $('#logOutput');
 
+const hashObj = getInitHash();
 if (hashObj.match) {
     $logInputTextarea.val(hashObj.match);
 }
@@ -113,7 +114,7 @@ combineLatest([
     hashObj.match = str;
     hashObj.method = method;
     hashObj.replacement = replacement;
-    history.replaceState(null, document.title, '#' + utils.param(hashObj));
+    setHash(hashObj);
 
     var result = 'Null';
 
