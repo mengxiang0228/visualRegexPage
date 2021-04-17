@@ -77,6 +77,12 @@ var predefinedSourceObservable = predefinedChangedObservable.pipe(
             if (isPc) {
                 $sourceInput.trigger('focus');
             }
+            else {
+                $sourceInput[0].scrollIntoView({
+                    behavior: 'smooth',
+                    block:'center'
+                });
+            }
         }
     })
 )
