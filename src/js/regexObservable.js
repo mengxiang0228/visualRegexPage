@@ -10,7 +10,8 @@ import {distinctUntilChanged} from 'rxjs/internal/operators/distinctUntilChanged
 import {publishBehavior} from 'rxjs/internal/operators/publishBehavior';
 import {refCount} from 'rxjs/internal/operators/refCount';
 import predefinedRegs from "./predefined";
-import { getInitHash } from './hash';
+import {getInitHash} from './hash';
+import {isPc} from "./constant";
 
 var $sourceCtl = $('#regexSource');
 var $sourceInput = $sourceCtl.find('input');
@@ -68,9 +69,14 @@ var predefinedSourceObservable = predefinedChangedObservable.pipe(
         console.log('predefined source change');
         $sourceInput.val(source || '');
         if (source.trim() !== '') {
+            // 这里需注意，将addClass miniTitle和focus事件响应分开了。所以miniTitle的样式类不是严格和focus响应中的处理保持一致状态。
+
             //当前页面未获得焦点的时候，focus回调不会触发。
             $sourceCtl.addClass('miniTitle');
-            $sourceInput.trigger('focus');
+
+            if (isPc) {
+                $sourceInput.trigger('focus');
+            }
         }
     })
 )

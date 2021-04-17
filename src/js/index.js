@@ -1,6 +1,7 @@
 import '../less/index.js';
 import $ from 'relax-dom';
 import utils from 'relax-utils';
+import {isPc} from "./constant";
 import regexChange from './regexChange';
 
 var $body = $(document.body);
@@ -9,7 +10,6 @@ if (utils.isIE()) {
     alert('恐怕不太能兼容IE浏览器，最好切换为极速模式或chrome浏览器。');
 }
 
-var isPc = window.innerWidth >= 1024;
 var isShowAside = false;
 
 
