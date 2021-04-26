@@ -1,12 +1,12 @@
 {
-  "name": "visualRegexPage",
+  "name": "visual-regex-page",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development webpack --config webpack.config.js",
-    "build": "NODE_ENV=production webpack --config webpack.config.js",
-    "server": "webpack serve --open --config webpack.server.config.js",
+    "start": "npm run dev",
+    "dev": "NODE_ENV=development webpack serve",
+    "build": "NODE_ENV=production webpack",
     "stat": "NODE_ENV=production webpack --profile --json > stats.json",
     "analyzer": "NODE_ENV=production webpack --config webpack.analyzer.config.js"
   },
@@ -28,7 +28,7 @@
   "dependencies": {
     "highlight.js": "^9.12.0",
     "relax-dom": "^1.0.37",
-    "relax-utils": "^1.0.63",
+    "relax-utils": "^1.0.68",
     "rxjs": "^6.6.6",
     "visual-regex": "^1.0.7"
   }

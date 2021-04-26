@@ -16,56 +16,17 @@ function getPrefixList() {
     return literal.split('')
 }
 
-const prefixList = getPrefixList();
-
-const replaceList = Object.values(predefinedRegs).map(({source}) => source).concat([
-    '|',
-    '^',
-    '$',
-    '(?:',
-    '(?=',
-    '(?!',
-    '?',
-    '(',
-    ')',
-    '[0-9]',
-    '[a-z]',
-    '[A-Z]',
-    '[',
-    ']',
-    '{',
-    '}',
-    'a-zA-Z',
-    'A-Za-z',
-    'a-z',
-    'A-Z',
-    '0-9',
-    '%',
-    '\\s',
-    '\\S',
-    '\\d',
-    '\\D',
-    '\\w',
-    '\\W',
-    '\\b',
-    '\\B',
-    '\\u{',
-    '\\u',
-    '\\0',
-    '\\a',
-    '\\t',
-    '\\n',
-    '\\v',
-    '\\f',
-    '\\r',
-    '\\e'
-])
-    .map((str, i) => {
+function getReplaceList() {
+    return Object.keys(predefinedRegs).map((key) => {
         return {
-            val: str,
-            key: (i + '').padStart(2, '0')
+            val: predefinedRegs[key].source,
+            key
         }
-    })
+    });
+}
+
+const prefixList = getPrefixList();
+const replaceList = getReplaceList();
 
 let replaceAll = function (str, subStr, replacement) {
     return str.split(subStr).join(replacement);
@@ -88,7 +49,7 @@ function encodeSource(source) {
     })
     return {
         source: result,
-        prefix
+        prefix: result === source ? undefined : prefix
     }
 }
 
@@ -126,11 +87,17 @@ function getInitHash() {
 
 function setHash(obj) {
     const {source, prefix} = encodeSource(obj.source);
-    const str = utils.param({
+    let hashObj = {
         ...obj,
         source,
         prefix
-    });
+    }
+    if (!hashObj.match) hashObj.method = hashObj.replacement = undefined;
+    else if (hashObj.method !== 'replace') hashObj.replacement = undefined;
+
+    const str = utils.param(utils.pick(hashObj, key => hashObj[key]));
+    console.log('setHash', hashObj, str);
+
     history.replaceState(null, document.title, '#' + str);
 }
 
