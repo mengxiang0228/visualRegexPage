@@ -30,6 +30,6 @@
     "relax-dom": "^1.0.37",
     "relax-utils": "^1.0.68",
     "rxjs": "^6.6.6",
-    "visual-regex": "^1.0.7"
+    "visual-regex": "github:relax-code-relax-life/visualRegex"
   }
 }

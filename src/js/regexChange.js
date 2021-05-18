@@ -15,6 +15,7 @@ import hljs from 'highlight.js/lib/highlight'
 import jsonCss from 'highlight.js/styles/default.css'
 import visual from 'visual-regex';
 import matcher from './matcher';
+import utils from 'relax-utils';
 
 hljs.registerLanguage('json', require('highlight.js/lib/languages/json'));
 
@@ -119,7 +120,7 @@ combineLatest([
     var result = 'Null';
 
     if (reg) {
-        $logRegSource.html(source);
+        $logRegSource.html(utils.htmlEncode(source));
         $logRegFlags.html(flags);
 
         console.log('regex log ', source, flags, reg, str);
