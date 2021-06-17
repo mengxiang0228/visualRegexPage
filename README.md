@@ -2,5 +2,5 @@ The tool is used to learn regular expression syntax and test regular expression 
 
 # Home Page
 
-[https://wangwl.net/r/vs](https://wangwl.net/r/vs)
+[https://wangwl.net/r/vr](https://wangwl.net/r/vr)
 
