@@ -7,17 +7,33 @@
     margin: 0 1px;
   }
 
+
+  .vr_either {
+    color: rgba(210, 85, 101, 1);
+    margin: 0 3px;
+  }
+
   .vr_closure {
     margin-left: -2px;
   }
 
   // 最外层分组，margin 8px
-  & > .vr_groupWrapper {
+  & > .vr_groupWrapper,
+  & > .vr_lookaroundWrapper {
     margin: 0 8px;
 
     + .vr_closure {
       margin-left: -8px;
       margin-right: 8px;
+    }
+
+    + .vr_either {
+      margin: 0 8px 0 0;
+
+      + .vr_groupWrapper,
+      + .vr_lookaroundWrapper {
+        margin-left: 0;
+      }
     }
   }
 
@@ -33,9 +49,22 @@
         margin-right: 5px;
       }
 
+      + .vr_either {
+        margin: 0 5px 0 0;
+
+        + .vr_groupWrapper,
+        + .vr_lookaroundWrapper {
+          margin-left: 0;
+        }
+      }
+
       // 第三层
       .vr_groupWrapper, .vr_lookaroundWrapper {
         margin: 0 1px;
+
+        + .vr_either {
+          margin: 0 3px;
+        }
       }
     }
 
@@ -67,10 +96,6 @@
     color: rgba(0, 0, 205, 1);
   }
 
-  .vr_either {
-    color: rgba(210, 85, 101, 1);
-    margin: 0 3px;
-  }
 
   .vr_literal {
     color: #6c757d;
