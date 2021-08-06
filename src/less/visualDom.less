@@ -4,7 +4,8 @@
 
   span {
     display: inline-block;
-    margin: 0 1px;
+    //margin: 0 1px;
+    border: 1px solid transparent;
   }
 
 
@@ -100,6 +101,16 @@
   .vr_literal {
     color: #6c757d;
     border-bottom: 1px solid #6c757d;
+  }
+
+  .vr_literalBlank {
+    border: 1px dashed #6c757d;
+    width: 6px;
+
+    + .vr_literalBlank {
+      margin-left: -1px;
+      border-left-color: transparent;
+    }
   }
 
   .vr_setWrapper .vr_literal:nth-child(2n) {
