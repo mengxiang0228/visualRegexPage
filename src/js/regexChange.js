@@ -4,21 +4,35 @@ import {combineLatest} from 'rxjs/internal/observable/combineLatest';
 import {map} from 'rxjs/internal/operators/map';
 import {startWith} from 'rxjs/internal/operators/startWith';
 import {tap} from 'rxjs/internal/operators/tap';
+import {pairwise} from 'rxjs/internal/operators/pairwise';
 import {debounceTime} from 'rxjs/internal/operators/debounceTime';
 import {distinctUntilChanged} from 'rxjs/internal/operators/distinctUntilChanged';
 import {first} from 'rxjs/internal/operators/first';
 
-import {getInitHash,setHash} from './hash';
+import {getInitHash, setHash} from './hash';
 import {regexChanged} from './regexObservable'
 
 import hljs from 'highlight.js/lib/highlight'
 import jsonCss from 'highlight.js/styles/default.css'
-import visual from 'visual-regex';
+import visualRegex from 'visual-regex';
 import matcher from './matcher';
 import utils from 'relax-utils';
+import log from './log';
 
 hljs.registerLanguage('json', require('highlight.js/lib/languages/json'));
 
+function visual(reg) {
+    const v = visualRegex(reg);
+
+    const canvas = v.visualCanvas();
+    canvas.style.width = canvas.width / 2 + 'px';
+    canvas.style.height = canvas.height / 2 + 'px';
+
+    const dom = v.visualDom();
+    dom.className = 'vr_root';
+
+    return [canvas, dom]
+}
 
 var $figure = $('#figure');
 
@@ -60,7 +74,7 @@ var methodValueObservable = fromEvent($logInputSelect[0], 'change').pipe(
     map(e => e.target.value),
     startWith(hashObj.method),
     tap(method => {
-        console.log('cur method', method, 'cur hasObj:', JSON.stringify(hashObj));
+        log('cur method', method, 'cur hasObj:', JSON.stringify(hashObj));
         // hashObj.method = method;
         // history.replaceState(null, document.title, '#' + utils.param(hashObj));
 
@@ -86,28 +100,40 @@ replacementObservable.pipe(first()).subscribe((replacement) => {
 
 combineLatest([
     regexChanged.pipe(
-        tap(reg => {
-            console.log('refresh canvas', reg);
-            var canvas;
+        pairwise(),
+        tap(([preReg, reg]) => {
+            log('refresh canvas', reg, 'pre:', preReg);
+            var canvas, dom;
             if (reg && reg.expando[0]) {
-                console.log(reg, reg.flags);
-                canvas = visual(reg);
+                log('refresh canvas, reg exist', reg, reg.flags);
+                [canvas, dom] = visual(reg);
+                $figure.removeClass('error').html('');
+                $figure.append(dom).append(canvas);
             }
 
-            if (canvas) {
-                canvas.style.width = canvas.width / 2 + 'px';
-                canvas.style.height = canvas.height / 2 + 'px';
-                $figure.html('');
-                $figure.append(canvas);
-            } else {
-                $figure.html('Render error!');
+            if (canvas) { // 正常渲染，返回
+                return;
             }
-        })
+
+            // source为空字符
+            if (reg && !reg.expando[0]) {
+                [canvas] = visual(/请输入正则表达式/);
+                $figure.addClass('error').html('').append(canvas);
+            } else if (preReg && preReg.expando[0]) {
+                [canvas, dom] = visual(preReg);
+                $figure.addClass('error').html('');
+                $figure.append(dom).append(canvas);
+            } else {
+                $figure.addClass('error').html('Render Error!');
+            }
+
+        }),
+        map(([pre, cur]) => cur)
     ),
     matchValueObservable, methodValueObservable, replacementObservable
 ]).subscribe(([reg, str, method, replacement]) => {
 
-    console.log(`final subscribe, reg: ${reg}, expando: ${reg && reg.expando}, method: ${method}, replacement: ${replacement}`);
+    log(`final subscribe, reg: ${reg}, expando: ${reg && reg.expando}, method: ${method}, replacement: ${replacement}`);
 
     const [source, flags] = reg ? reg.expando : ['', ''];
     hashObj.flags = flags;
@@ -123,16 +149,16 @@ combineLatest([
         $logRegSource.html(utils.htmlEncode(source));
         $logRegFlags.html(flags);
 
-        console.log('regex log ', source, flags, reg, str);
+        log('regex log ', source, flags, reg, str);
 
         if (source !== '') {
-            console.log('method', method, hashObj.method);
+            log('method', method, hashObj.method);
             // let match = reg.exec(str);
             let match = matcher[method].call(reg, str, replacement);
             if (match !== null) {
                 result = JSON.stringify(match, null, 2);
             }
-            // console.log('regex log result:',match,reg.exec(str));
+            // log('regex log result:',match,reg.exec(str));
         }
         reg.lastIndex = 0;
     }

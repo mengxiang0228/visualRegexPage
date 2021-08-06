@@ -12,6 +12,7 @@ import {refCount} from 'rxjs/internal/operators/refCount';
 import predefinedRegs from "./predefined";
 import {getInitHash} from './hash';
 import {isPc} from "./constant";
+import log from './log';
 
 var $sourceCtl = $('#regexSource');
 var $sourceInput = $sourceCtl.find('input');
@@ -23,13 +24,13 @@ var $flagsInputs = $flagsCtl.find('input');
 //source=xxx&flags=muig&match=inputTxt
 
 let hashObj = getInitHash();
-console.log('hashObj:', hashObj);
+log('hashObj:', hashObj);
 
 merge(
     fromEvent($sourceInput[0], 'focus').pipe(map(e => true)),
     fromEvent($sourceInput[0], 'blur').pipe(map(e => false))
 ).subscribe((isFocus) => {
-    console.log('regexInput focus/blur callback');
+    log('regexInput focus/blur callback');
     if ($sourceInput.val().trim() !== '' || isFocus) {
         $sourceCtl.addClass('miniTitle');
     } else {
@@ -45,9 +46,9 @@ $sourceCtl.on('click', e => {
 
 });
 
-var predefinedChangedObservable = fromEvent($('#pageAside')[0], 'click', 'li').pipe(
+var predefinedObservable = fromEvent($('#pageAside')[0], 'click', 'li').pipe(
     map((e) => {
-        console.log('#pageAside click', e.target);
+        log('#pageAside click', e.target);
         var tar = e.target;
         if (tar.tagName !== 'SPAN') {
             tar = $(e.target).find('span')[0];
@@ -60,13 +61,9 @@ var predefinedChangedObservable = fromEvent($('#pageAside')[0], 'click', 'li').p
             flags: reg.flags || ''
         }
     }),
-    startWith(hashObj)
-);
-
-var predefinedSourceObservable = predefinedChangedObservable.pipe(
-    map(({source}) => source),
-    tap(source => {
-        console.log('predefined source change');
+    startWith(hashObj),
+    tap(({source}) => {
+        log('predefined source change:', source);
         $sourceInput.val(source || '');
         if (source.trim() !== '') {
             // 这里需注意，将addClass miniTitle和focus事件响应分开了。所以miniTitle的样式类不是严格和focus响应中的处理保持一致状态。
@@ -76,56 +73,52 @@ var predefinedSourceObservable = predefinedChangedObservable.pipe(
 
             if (isPc) {
                 $sourceInput.trigger('focus');
-            }
-            else {
+            } else {
                 $sourceInput[0].scrollIntoView({
                     behavior: 'smooth',
-                    block:'center'
+                    block: 'center'
                 });
             }
         }
-    })
-)
-
-var predefinedFlagsObservable = predefinedChangedObservable.pipe(
-    map(({flags}) => flags),
-    tap((flags) => {
-        console.log('predefined flags change');
+    }),
+    tap(({flags}) => {
+        log('predefined flags change', flags);
         $flagsInputs.each(node => {
             node.checked = flags.includes(node.value)
         });
     })
-)
-
-var flagsObservable = merge(
-    fromEvent($flagsCtl[0], 'change', 'input').pipe(map((e) => {
-        console.log('flag input change', e.target);
-        return $flagsInputs.map(node => node.checked ? node.value : '').join('')
-    })),
-    predefinedFlagsObservable
-).pipe(tap(val => console.log('flag changed,', val)))
-
-var sourceObservable = merge(
-    fromEvent($sourceInput[0], 'input').pipe(
-        map(e => e.target.value),
-        tap(val => {
-            console.log('source input', val);
-        }),
-        debounceTime(300)
-    ),
-    predefinedSourceObservable
 );
 
-var regexChangedObservable = combineLatest([
-    sourceObservable,
-    flagsObservable
-]).pipe(
-    map(([source, flags]) => {
-        return {source, flags};
-    }),
-    distinctUntilChanged((pre, cur) => pre.source === cur.source && pre.flags === cur.flags),
-    map(({source, flags}) => {
+var flagsObservable = fromEvent($flagsCtl[0], 'change', 'input').pipe(
+    map((e) => {
+        log('flag input change', e.target);
+        return $flagsInputs.map(node => node.checked ? node.value : '').join('')
+    })
+);
 
+var sourceObservable = fromEvent($sourceInput[0], 'input').pipe(
+    map(e => e.target.value),
+    tap(val => {
+        log('source input', val);
+    }),
+    debounceTime(300)
+)
+
+// 发出RegExp对象，如果new RegExp出错，则发出null。
+// 过滤连续出错(连续发出null)的情况，即连续两次发出的值，一定有一个是有效的RegExp对象
+var regexChangedObservable = combineLatest([
+    merge(
+        predefinedObservable.pipe(map(({source}) => source)),
+        sourceObservable
+    ),
+    merge(
+        predefinedObservable.pipe(map(({flags}) => flags)),
+        flagsObservable,
+    )
+]).pipe(
+    distinctUntilChanged((pre, cur) => pre[0] === cur[0] && pre[1] === cur[1]),
+    map(([source, flags]) => {
+        log('new RegExp:', source, flags)
         var reg = null;
         try {
             reg = new RegExp(source, flags);
@@ -138,10 +131,12 @@ var regexChangedObservable = combineLatest([
         }
 
         if (reg) {
+            // source为空字符时，reg.source不是空字符
             reg.expando = [source, flags];
         }
         return reg;
     }),
+    distinctUntilChanged((pre, cur) => !pre && !cur), // 过滤两次都为null的情况
     publishBehavior(),
     refCount()
 )
