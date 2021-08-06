@@ -3,6 +3,7 @@ import aside from './aside.less';
 import nav from './nav.less';
 import asideBtn from './asideBtn.less'
 import index from './index.less';
+import vr from './visualDom.less';
 
 
 var styleEle=document.createElement('style');
