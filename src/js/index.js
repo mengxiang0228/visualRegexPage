@@ -1,13 +1,13 @@
-import '../less/index.js';
+import cls from '../less/index.js';
 import $ from 'relax-dom';
-import utils from 'relax-utils';
+import {isIE} from 'relax-utils';
 import {isPc} from "./constant";
 import regexChange from './regexChange';
 
 var $body = $(document.body);
 
-if (utils.isIE()) {
-    alert('恐怕不太能兼容IE浏览器，最好切换为极速模式或chrome浏览器。');
+if (isIE()) {
+    alert('恐怕不太能兼容IE浏览器，最好切换为极速模式或chrome浏览器。❤');
 }
 
 var isShowAside = false;
@@ -32,13 +32,13 @@ var fixedPloyfillRemove = function () {
 var action = {
     showAside() {
         if (isShowAside) return;
-        $body.addClass('showAside');
+        $body.addClass(cls.showAside);
         isShowAside = true;
         fixedPloyfill();
     },
     hideAside() {
         if (!isShowAside) return;
-        $body.removeClass('showAside');
+        $body.removeClass(cls.showAside);
         isShowAside = false;
         fixedPloyfillRemove();
     },

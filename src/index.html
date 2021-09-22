@@ -7,7 +7,8 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <title>正则可视化</title>
-    <meta name="keywords" content="正则可视化,正则表达式,常用正则,正则图解,正则测试,正则生成,正则,visual,regexp,regular,expression,wangweilin,wwl,w-wl,"/>
+    <meta name="keywords"
+          content="正则可视化,正则表达式,常用正则,正则图解,正则测试,正则生成,正则,visual,regexp,regular,expression,wangweilin,wwl,w-wl,"/>
     <meta name="description" content="正则表达式图形化可视化工具、常用正则速查、常用语法速查、测试正则语法、测试内容匹配。收录常用正则有URL、邮箱、手机号、身份证等。"/>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
@@ -21,7 +22,7 @@
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
 
     <script>
-        if(location.hostname.includes('wangweilin')) location.hostname='wangwl.net';
+        if (location.hostname.includes('wangweilin')) location.hostname = 'wangwl.net';
         var _hmt = _hmt || [];
         (function () {
             var hm = document.createElement("script");
@@ -36,8 +37,8 @@
 
 <nav>
     <span class="rightLink">
-        <a href="https://github.com/relax-code-relax-life/visualRegexPage/issues">Issues</a>
-        <a href="/" target="_self">首页</a>
+        <a href="https://github.com/relax-code-relax-life">GitHub</a>
+        <a href="/" target="_self">Home</a>
     </span>
 </nav>
 
@@ -55,16 +56,14 @@
 
 
 <aside class="pageAside" id="pageAside">
-
+    <div class="pageAsideSticky"></div>
     <ul>
         <li><span data-reg="url">URL</span></li>
         <li><span data-reg="email">Email</span></li>
+        <li><span data-reg="ipv4">IPv4</span></li>
         <li><span data-reg="postcode">邮编</span></li>
         <li><span data-reg="phone">手机号</span></li>
         <li><span data-reg="idNum">身份证</span></li>
-        <li><span data-reg="trim">首尾空格</span></li>
-        <li><span data-reg="singleChar">半角字符</span></li>
-        <li><span data-reg="doubleChar">全角字符</span></li>
         <li><span data-reg="ie">userAgent检测IE</span></li>
         <li><span data-reg="chrome">userAgent检测Chrome</span></li>
         <li><span data-reg="safari">userAgent检测Safari</span></li>
@@ -72,6 +71,9 @@
         <li><span data-reg="ios">userAgent检测IOS</span></li>
         <li><span data-reg="android">userAgent检测Android</span></li>
         <li><span data-reg="wechat">userAgent检测微信</span></li>
+        <li><span data-reg="trim">首尾空格</span></li>
+        <li><span data-reg="singleChar">半角字符</span></li>
+        <li><span data-reg="doubleChar">全角字符</span></li>
         <li><span data-reg="sp1">m~n个数字</span></li>
         <li><span data-reg="sp2">只能是英文、数字、下划线</span></li>
         <li><span data-reg="sp3">字母开头且只能是英文数字下划线</span></li>
@@ -81,14 +83,11 @@
         <li><span data-reg="num">数字</span></li>
         <li><span data-reg="positiveNum">正数</span></li>
         <li><span data-reg="negativeNum">负数</span></li>
-        <li><span data-reg="ipv4">IPv4</span></li>
     </ul>
-
 </aside>
 <div class="pageAsideCover" id="pageAsideCover"></div>
 
 <main class="pageMain">
-
     <div class="formCtl" id="regexSource">
         <input class="formInput">
         <span class="formTitle">请输入正则表达式</span>
@@ -128,9 +127,10 @@
             </span>"; //输入要匹配的字符串
         </p>
         <p>var regex = new RegExp("<span id="logRegSource"></span>","<span id="logRegFlags"></span>");</p>
-        <p class="logReplacementSec">var replacement = "<input class="logReplacementInput" type="text" id="logReplacementInput">"</p>
+        <p class="logReplacementSec">var replacement = "<input class="logReplacementInput" type="text"
+                                                               id="logReplacementInput">"</p>
         <p>
-            <span class="logSelectWrap" >
+            <span class="logSelectWrap">
                 <select class="logSelect" id="logSelect">
                     <option value="exec">regex.exec( str )</option>
                     <option value="match">str.match( regex )</option>
@@ -145,7 +145,7 @@
     </div>
 
 
-    <div class="syntax">
+    <div class="syntax fieldset">
         <h2>支持语法</h2>
         <ul>
             <li><span class="key">[abc]</span><span class="desc">单个字符:a或b或c</span></li>
@@ -198,27 +198,28 @@
         </ul>
     </div>
 
-    <div class="note">
+    <div class="note fieldset">
         <h2>相关链接</h2>
         <p><a href="http://urlregex.com/">URL 摘录链接</a></p>
-        <p><a href="https://www.leveluplunch.com/java/examples/common-regular-expressions/#email-address-regex">Email
-            摘录链接</a></p>
+        <p><a href="https://www.leveluplunch.com/java/examples/common-regular-expressions/#email-address-regex">Email 摘录链接</a></p>
         <p><a href="https://github.com/VincentSit/ChinaMobilePhoneNumberRegex">手机号 摘录链接</a></p>
-        <p>
-            <a href="https://stackoverflow.com/questions/1449817/what-are-some-of-the-most-useful-regular-expressions-for-programmers">整数/正整数/负整数/数字/正数/负数/IPv4
-                摘录链接</a></p>
+        <p><a href="https://stackoverflow.com/questions/1449817/what-are-some-of-the-most-useful-regular-expressions-for-programmers"
+            >整数/正整数/负整数/数字/正数/负数/IPv4 摘录链接</a></p>
         <p>身份证摘录链接忘记备注了</p>
         <p>其余常用正则，均为<a href="/"><abbr title="WangWeiLin">个人</abbr></a>总结，如有错误烦请留言指正。</p>
         <p>npm package: <a href="https://www.npmjs.com/package/visual-regex">visual-regex</a></p>
     </div>
 
-    <div class="comment">
+    <div class="comment fieldset">
         <h2>发表评论</h2>
         <div class="comment_root" id="comment">
             loading comment ...
         </div>
     </div>
-    <script defer="defer" src="/static/comment/index.js" data-topic-id="<%= topic_id %>" data-container-id="comment"></script>
+    <script defer="defer"
+            src="/static/comment/index.js"
+            data-topic-id="<%= topic_id %>"
+            data-container-id="comment"></script>
 
 </main>
 

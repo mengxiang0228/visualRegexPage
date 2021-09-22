@@ -1,7 +1,6 @@
 @import "./util.less";
 
 .topBtn {
-
   position: fixed;
   top: 0;
   left: 0;
@@ -74,12 +73,6 @@
 body.showAside {
 
   .topBtn {
-    @media screen and (min-width: @mobileWidth) {
-      animation: topBtn .2s ease-out;
-      animation-fill-mode: forwards;
-    }
-
-
     .asideBtnIcon {
 
       .iconItem {
@@ -114,40 +107,4 @@ body.showAside {
     }
   }
 
-}
-
-
-
-@keyframes topBtn {
-  0% {
-    width: auto;
-    background-color: transparent
-  }
-
-  99%{
-    width: 234px;
-    background-color: transparent
-  }
-
-  100% {
-    width: 235px;
-    background-color: #36404b
-  }
-}
-
-@keyframes topBtnHide {
-  0% {
-    width: 235px;
-    background-color: #36404b
-  }
-
-  1%{
-    width: 234px;
-    background-color: transparent;
-  }
-
-  100% {
-    width: auto;
-    background-color: transparent
-  }
 }

@@ -1,5 +1,5 @@
 import predefinedRegs from "./predefined";
-import utils from "relax-utils";
+import {parseParam, param, pick} from "relax-utils";
 
 
 function getPrefixList() {
@@ -68,7 +68,7 @@ let hashObj;
 function getInitHash() {
     if (!hashObj) {
         try {
-            hashObj = utils.parseParam(location.hash.replace(/^#/, ''));
+            hashObj = parseParam(location.hash.replace(/^#/, ''));
         } catch (e) {
             console.log('parse param error:', e);
             hashObj = {};
@@ -95,7 +95,7 @@ function setHash(obj) {
     if (!hashObj.match) hashObj.method = hashObj.replacement = undefined;
     else if (hashObj.method !== 'replace') hashObj.replacement = undefined;
 
-    const str = utils.param(utils.pick(hashObj, key => hashObj[key]));
+    const str = param(pick(hashObj, key => hashObj[key]));
     console.log('setHash', hashObj, str);
 
     history.replaceState(null, document.title, '#' + str);

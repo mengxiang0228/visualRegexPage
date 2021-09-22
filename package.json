@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run dev",
-    "dev": "NODE_ENV=development webpack serve",
-    "build": "NODE_ENV=production webpack",
-    "stat": "NODE_ENV=production webpack --profile --json > stats.json",
-    "analyzer": "NODE_ENV=production webpack --config webpack.analyzer.config.js"
+    "dev": "NODE_ENV=development webpack serve --config ./build/webpack.config.js",
+    "build": "NODE_ENV=production node build/build.js",
+    "stat": "NODE_ENV=production webpack --config ./build/webpack.config.js --profile --json > stats.json",
+    "analyzer": "NODE_ENV=production webpack --config ./build/webpack.analyzer.config.js"
   },
   "author": "wwl",
   "license": "ISC",
@@ -23,13 +23,14 @@
     "webpack": "^5.26.3",
     "webpack-bundle-analyzer": "^4.4.0",
     "webpack-cli": "^4.5.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "wwl-hash": "^1.0.1"
   },
   "dependencies": {
     "highlight.js": "^9.12.0",
     "relax-dom": "^1.0.37",
-    "relax-utils": "^1.0.68",
+    "relax-utils": "^2.0.3",
     "rxjs": "^6.6.6",
-    "visual-regex": "github:relax-code-relax-life/visualRegex"
+    "visual-regex": "file:../visualRegex"
   }
 }

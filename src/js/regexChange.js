@@ -12,11 +12,13 @@ import {first} from 'rxjs/internal/operators/first';
 import {getInitHash, setHash} from './hash';
 import {regexChanged} from './regexObservable'
 
+import cls from '../less/index.js';
+
 import hljs from 'highlight.js/lib/highlight'
 import jsonCss from 'highlight.js/styles/default.css'
 import visualRegex from 'visual-regex';
 import matcher from './matcher';
-import utils from 'relax-utils';
+import {htmlEncode} from 'relax-utils';
 import log from './log';
 
 hljs.registerLanguage('json', require('highlight.js/lib/languages/json'));
@@ -25,8 +27,6 @@ function visual(reg) {
     const v = visualRegex(reg);
 
     const canvas = v.visualCanvas();
-    canvas.style.width = canvas.width / 2 + 'px';
-    canvas.style.height = canvas.height / 2 + 'px';
 
     const dom = v.visualDom();
     dom.className = 'vr_root';
@@ -107,7 +107,7 @@ combineLatest([
             if (reg && reg.expando[0]) {
                 log('refresh canvas, reg exist', reg, reg.flags);
                 [canvas, dom] = visual(reg);
-                $figure.removeClass('error').html('');
+                $figure.removeClass(cls.error).html('');
                 $figure.append(dom).append(canvas);
             }
 
@@ -118,13 +118,13 @@ combineLatest([
             // source为空字符
             if (reg && !reg.expando[0]) {
                 [canvas] = visual(/请输入正则表达式/);
-                $figure.addClass('error').html('').append(canvas);
+                $figure.addClass(cls.error).html('').append(canvas);
             } else if (preReg && preReg.expando[0]) {
                 [canvas, dom] = visual(preReg);
-                $figure.addClass('error').html('');
+                $figure.addClass(cls.error).html('');
                 $figure.append(dom).append(canvas);
             } else {
-                $figure.addClass('error').html('Render Error!');
+                $figure.addClass(cls.error).html('Render Error!');
             }
 
         }),
@@ -146,7 +146,7 @@ combineLatest([
     var result = 'Null';
 
     if (reg) {
-        $logRegSource.html(utils.htmlEncode(source));
+        $logRegSource.html(htmlEncode(source));
         $logRegFlags.html(flags);
 
         log('regex log ', source, flags, reg, str);

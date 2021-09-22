@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
+const path = require('path');
+const {getLocalIdent} = require('./getLocalIdent');
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -11,15 +13,28 @@ const banner = '/*! https://wangwl.net */';
 
 let topic_id = isDev ? 'wwl375933ad96869' : '0A945EC1633225F7';
 
+const prjDir = path.join(__dirname, '../');
 const distDir = isDev ? 'dev_dist' : 'dist';
+
+const cssLoader = {
+    loader: 'css-loader',
+    options: {
+        modules: {
+            getLocalIdent: (context, localIdentName, localName, options) => {
+                if (isDev) return localName;
+                return getLocalIdent(context, localIdentName, localName, options);
+            }
+        }
+    }
+}
 
 let config = {
     mode: isDev ? 'development' : 'production',
     entry: {
-        index: resolve(__dirname, 'src/js/index.js')
+        index: resolve(prjDir, 'src/js/index.js')
     },
     devServer: {
-        contentBase: resolve(__dirname, distDir),
+        contentBase: resolve(prjDir, distDir),
         port: 9000,
         open: true,
         openPage: 'index.html',
@@ -33,7 +48,7 @@ let config = {
     output: {
         clean: true,
         filename: isDev ? '[name].js' : '[contenthash].js',
-        path: resolve(__dirname, distDir),
+        path: resolve(prjDir, distDir),
         publicPath: isDev ? "./" : '/static/projects/visualRegex/'
     },
     plugins: [
@@ -42,8 +57,9 @@ let config = {
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: resolve(__dirname, './src/index.html'),
-            templateParameters: {topic_id}
+            template: resolve(prjDir, './src/index.html'),
+            templateParameters: {topic_id},
+            minify: !isDev
         }),
         new webpack.BannerPlugin({
             banner: banner,
@@ -54,11 +70,11 @@ let config = {
         rules: [
             {
                 test: /\.less$/i,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+                use: [MiniCssExtractPlugin.loader, cssLoader, 'less-loader'],
             },
             {
                 test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, cssLoader],
             }
         ],
     },

@@ -1,7 +1,6 @@
 @import "./util.less";
 
 .pageAside {
-
   position: fixed;
   width: @asideWidth;
   height: 100%;
@@ -10,14 +9,21 @@
   background-color: @green2;
   overflow: auto;
   overflow-x: visible;
-  padding-top: @navHeight+10px;
   color: #fff;
   transform: translate3d(-100%, 0, 0);
   transition: transform .2s ease-out;
   z-index: @asideZindex;
 
-  ul {
+  .pageAsideSticky {
+    position: sticky;
+    z-index: 1;
+    height: @navHeight;
+    background-color: @green2;
+    top: 0;
+    left: 0;
+  }
 
+  ul {
     li {
       padding-left: 15px;
       border-left: 3px solid transparent;
@@ -56,6 +62,11 @@
     width: 85%;
     border-top: @navHeight solid transparent;
     padding-top: 0;
+
+    .pageAsideSticky {
+      display: none;
+    }
+
   }
 
   body.showAside .pageAsideCover {

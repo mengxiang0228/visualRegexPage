@@ -13,6 +13,8 @@ import predefinedRegs from "./predefined";
 import {getInitHash} from './hash';
 import {isPc} from "./constant";
 import log from './log';
+import cls from '../less/index.js';
+
 
 var $sourceCtl = $('#regexSource');
 var $sourceInput = $sourceCtl.find('input');
@@ -32,9 +34,9 @@ merge(
 ).subscribe((isFocus) => {
     log('regexInput focus/blur callback');
     if ($sourceInput.val().trim() !== '' || isFocus) {
-        $sourceCtl.addClass('miniTitle');
+        $sourceCtl.addClass(cls.miniTitle);
     } else {
-        $sourceCtl.removeClass('miniTitle');
+        $sourceCtl.removeClass(cls.miniTitle);
     }
 })
 
@@ -69,7 +71,7 @@ var predefinedObservable = fromEvent($('#pageAside')[0], 'click', 'li').pipe(
             // 这里需注意，将addClass miniTitle和focus事件响应分开了。所以miniTitle的样式类不是严格和focus响应中的处理保持一致状态。
 
             //当前页面未获得焦点的时候，focus回调不会触发。
-            $sourceCtl.addClass('miniTitle');
+            $sourceCtl.addClass(cls.miniTitle);
 
             if (isPc) {
                 $sourceInput.trigger('focus');
@@ -122,11 +124,11 @@ var regexChangedObservable = combineLatest([
         var reg = null;
         try {
             reg = new RegExp(source, flags);
-            $sourceCtl.removeClass('error');
+            $sourceCtl.removeClass(cls.error);
             $sourceTip.html('');
         } catch (err) {
             console.dir(err);
-            $sourceCtl.addClass('error');
+            $sourceCtl.addClass(cls.error);
             $sourceTip.html(err.message);
         }
 

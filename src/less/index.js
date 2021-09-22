@@ -5,14 +5,12 @@ import asideBtn from './asideBtn.less'
 import index from './index.less';
 import vr from './visualDom.less';
 
+const showAside = index.showAside;
+const error = index.error;
+const miniTitle = index.miniTitle;
 
-var styleEle=document.createElement('style');
-styleEle.innerHTML=`
-@media screen and  (min-width:1024px){
-  .topBtn{
-    animation:topBtnHide .1s ease-in;
-    animation-fill-mode: backwards;
-  }
+export default {
+    showAside,
+    error,
+    miniTitle
 }
-`;
-document.head.appendChild(styleEle);
