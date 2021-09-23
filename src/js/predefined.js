@@ -28,19 +28,23 @@ export default {
         flags: 'g'
     },
     ie: {
-        source: 'MSIE (\\d+)|Trident\\/.*; rv:(\\d+)|(Edge\\/\\d+)',
+        source: /(?:MSIE |Trident\/.*; rv:)(\d+)/.source,
+        flags: ''
+    },
+    edge: {
+        source: /(?:Edge|Edg|EdgiOS|EdgA)\/(\d+)/.source,
         flags: ''
     },
     chrome: {
-        source: 'Chrome\\/(\\d+)',
+        source: /(?:Chrome|CriOS)\/(\d+)/.source,
         flags: ''
     },
     safari: {
-        source: /Version\/([\d.]+) Safari\/\d+/.source,
+        source: /Version\/([\d.]+)( Mobile\/.+?)? Safari\/\d+/.source,
         flags: ''
     },
     firefox: {
-        source: 'Firefox\\/(\\d+)',
+        source: /(?:Firefox|FxiOS)\/(\d+)/.source,
         flags: ''
     },
     ios: {

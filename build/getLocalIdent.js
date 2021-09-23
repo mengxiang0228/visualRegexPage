@@ -1,4 +1,4 @@
-const {hashContentSync} = require('wwl-hash');
+const {hashContentSync} = require('relax-hash');
 
 const name2hash = {};
 const hash2name = {};
