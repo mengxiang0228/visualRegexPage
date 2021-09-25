@@ -4,6 +4,7 @@ import {merge} from 'rxjs/internal/observable/merge';
 import {combineLatest} from 'rxjs/internal/observable/combineLatest';
 import {map} from 'rxjs/internal/operators/map';
 import {startWith} from 'rxjs/internal/operators/startWith';
+import {filter} from 'rxjs/internal/operators/filter';
 import {tap} from 'rxjs/internal/operators/tap';
 import {debounceTime} from 'rxjs/internal/operators/debounceTime';
 import {distinctUntilChanged} from 'rxjs/internal/operators/distinctUntilChanged';
@@ -48,9 +49,13 @@ $sourceCtl.on('click', e => {
 
 });
 
-var predefinedObservable = fromEvent($('#pageAside')[0], 'click', 'li').pipe(
+var predefinedObservable = fromEvent($('#pageAside')[0], 'click').pipe(
+    filter((e) => {
+        log('#pageAside click target.tagName:', e.target.tagName);
+        return e.target.tagName === 'SPAN' || e.target.tagName === 'LI';
+    }),
     map((e) => {
-        log('#pageAside click', e.target);
+        log('#pageAside click', e.target, e.currentTarget);
         var tar = e.target;
         if (tar.tagName !== 'SPAN') {
             tar = $(e.target).find('span')[0];
@@ -58,6 +63,9 @@ var predefinedObservable = fromEvent($('#pageAside')[0], 'click', 'li').pipe(
 
         var key = tar.dataset.reg;
         var reg = predefinedRegs[key] || {};
+
+        log('#pageAside click, key:', key, ',reg:', reg);
+
         return {
             source: reg.source || '',
             flags: reg.flags || ''

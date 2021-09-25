@@ -80,7 +80,7 @@ export default {
         flags: ''
     },
     int: { //整数
-        source: '^-\\d+$',
+        source: '^-?\\d+$',
         flags: ''
     },
     positiveNum: { //正数

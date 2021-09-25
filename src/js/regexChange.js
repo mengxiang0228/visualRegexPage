@@ -149,7 +149,7 @@ combineLatest([
         $logRegSource.html(htmlEncode(source));
         $logRegFlags.html(flags);
 
-        log('regex log ', source, flags, reg, str);
+        log(`regex log, source:${source}, flags:${flags}, reg:${reg}, str:${str}`);
 
         if (source !== '') {
             log('method', method, hashObj.method);
