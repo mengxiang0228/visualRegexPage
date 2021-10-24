@@ -68,7 +68,7 @@ export default {
         flags: ''
     },
     sp3: {   //字母开头且只能是英文数字下划线
-        source: '^[a-zA-Z]\\w$',
+        source: '^[a-zA-Z]\\w*$',
         flags: ''
     },
     positiveInt: { //正整数
