@@ -24,5 +24,10 @@ export default {
             return reg.exec(str);
         }
     },
+    'test': {
+        call(reg, str) {
+            return reg.test(str);
+        }
+    }
 
 }

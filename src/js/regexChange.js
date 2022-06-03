@@ -44,8 +44,7 @@ var $logInputTextarea = $logInputCtl.find('textarea');
 var $logInputSelect = $('#logSelect');
 var $logInputReplacement = $('#logReplacementInput');
 
-var $logRegSource = $('#logRegSource');
-var $logRegFlags = $('#logRegFlags');
+var $logRegExpression = $('#logRegExpression');
 
 var $logOutput = $('#logOutput');
 
@@ -146,8 +145,8 @@ combineLatest([
     var result = 'Null';
 
     if (reg) {
-        $logRegSource.html(htmlEncode(source));
-        $logRegFlags.html(flags);
+        const encodeSource = htmlEncode(source.replace(/[\\"]/g, '\\$&')); // html encode + backslash escape
+        $logRegExpression.html(`new RegExp("${encodeSource}", "${flags}")`);
 
         log(`regex log, source:${source}, flags:${flags}, reg:${reg}, str:${str}`);
 

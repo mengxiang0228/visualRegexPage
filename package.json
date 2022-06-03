@@ -31,6 +31,6 @@
     "relax-dom": "^1.0.37",
     "relax-utils": "^2.1.1",
     "rxjs": "^6.6.6",
-    "visual-regex": "file:../visualRegex"
+    "visual-regex": "^2.0.5"
   }
 }

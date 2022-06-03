@@ -127,7 +127,7 @@
                 <textarea></textarea>
             </span>"; //输入要匹配的字符串
         </p>
-        <p>var regex = new RegExp("<span id="logRegSource"></span>","<span id="logRegFlags"></span>");</p>
+        <p>var regex = <span id="logRegExpression"></span>;</p>
         <p class="logReplacementSec">var replacement = "<input class="logReplacementInput" type="text"
                                                                id="logReplacementInput">"</p>
         <p>
@@ -138,6 +138,7 @@
                     <option value="search">str.search( regex )</option>
                     <option value="replace">str.replace( regex, replacement )</option>
                     <option value="split">str.split( regex )</option>
+                    <option value="test">regex.test( str )</option>
                 </select>
             </span>
 
