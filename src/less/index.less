@@ -329,6 +329,7 @@ body.showAside {
 .note {
   color: #999;
   font-size: 12px;
+
   a {
     text-decoration: underline;
   }
@@ -357,5 +358,22 @@ a.regexLink {
   .comment_root {
     max-width: 1000px;
     margin: 0 auto;
+  }
+}
+
+.footer {
+  border-top: 1px solid @borderColor;
+  font-size: 12px;
+  padding-top: 10px;
+  color: #999;
+  text-align: center;
+
+  span:after {
+    content: "|";
+    padding: 0 5px;
+  }
+
+  span:last-child:after {
+    display: none;
   }
 }

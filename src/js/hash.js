@@ -99,6 +99,13 @@ function setHash(obj) {
     console.log('setHash', hashObj, str);
 
     history.replaceState(null, document.title, '#' + str);
+
+    try {
+        if (!location.hostname.endsWith('wangwl.net') && process.env.NODE_ENV !== 'development') {
+            location.href = 'https://wangwl.net/r/vr#' + str;
+        }
+    } catch (e) {
+    }
 }
 
 export {

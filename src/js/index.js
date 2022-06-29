@@ -57,11 +57,12 @@ $('#pageAsideCover').on('click', function (e) {
 });
 if (isPc) {
     action.showAside();
-}
-else {
+} else {
     $('#pageAside').onDelegate('click', 'li', e => {
         action.toggleAside();
     });
 }
 
-
+// if (process.env.NODE_ENV !== 'development' && !/wangwl\.net$/.test(location.hostname)) {
+//     location.href = 'https://wangwl.net/r/vr';
+// }
